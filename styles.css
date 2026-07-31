@@ -1200,11 +1200,14 @@ h1, h2, h3, h4, .serif-font {
 
   .autosave-indicator {
     padding: 4px 8px;
-    font-size: 0.75rem;
+    font-size: 0.72rem;
     gap: 4px;
+    flex-shrink: 0;
   }
 
   .action-buttons-group {
+    flex: 1;
+    justify-content: center;
     gap: 8px;
   }
 
@@ -1212,6 +1215,11 @@ h1, h2, h3, h4, .serif-font {
     padding: 9px 14px;
     font-size: 0.84rem;
     min-height: 42px;
+  }
+
+  .btn-primary-gold {
+    flex: 1;
+    max-width: 180px;
   }
 }
 
