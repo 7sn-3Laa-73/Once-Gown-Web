@@ -1105,7 +1105,7 @@ h4,
 
 .role-modal-card {
   width: 100%;
-  max-width: 760px;
+  max-width: 640px;
   max-height: calc(100vh - 30px);
   overflow-y: auto;
   background: rgba(255, 255, 255, 0.88);
@@ -1113,10 +1113,10 @@ h4,
   -webkit-backdrop-filter: blur(40px) saturate(220%);
   border: 1px solid rgba(255, 255, 255, 0.95);
   border-bottom: 1px solid rgba(240, 183, 190, 0.5);
-  border-radius: 32px;
-  padding: 48px 42px;
+  border-radius: 24px;
+  padding: 30px 24px;
   text-align: center;
-  box-shadow: 0 32px 90px rgba(122, 46, 57, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.95);
+  box-shadow: 0 24px 70px rgba(122, 46, 57, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.95);
   position: relative;
 }
 
@@ -1124,50 +1124,51 @@ h4,
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 24px;
+  margin-bottom: 16px;
 }
 
 .in-modal-lang-btn {
   background: rgba(253, 245, 246, 0.85);
   border-color: rgba(240, 183, 190, 0.7);
-  padding: 7px 16px;
+  padding: 5px 12px;
+  font-size: 0.76rem;
   box-shadow: 0 4px 12px rgba(122, 46, 57, 0.08);
 }
 
 .role-modal-badge {
   display: inline-block;
   font-family: 'Inter', sans-serif;
-  font-size: 0.74rem;
+  font-size: 0.7rem;
   font-weight: 700;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.14em;
   color: var(--rose-deep);
   background: rgba(240, 183, 190, 0.22);
   border: 1px solid rgba(240, 183, 190, 0.5);
-  padding: 6px 18px;
+  padding: 4px 14px;
   border-radius: var(--radius-pill);
   margin-bottom: 0;
 }
 
 .role-modal-title {
   font-family: 'Dancing Script', 'Alexandria', cursive;
-  font-size: 2.6rem;
+  font-size: 2.0rem;
   font-weight: 700;
   color: var(--text-primary);
-  margin-bottom: 10px;
+  margin-bottom: 6px;
 }
 
 .role-modal-subtitle {
-  font-size: 0.96rem;
+  font-size: 0.88rem;
   color: var(--text-secondary);
-  max-width: 480px;
-  margin: 0 auto 38px auto;
-  line-height: 1.6;
+  max-width: 420px;
+  margin: 0 auto 24px auto;
+  line-height: 1.5;
 }
 
 .role-cards-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 26px;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 18px;
 }
 
 .role-card {
@@ -1176,8 +1177,8 @@ h4,
   -webkit-backdrop-filter: blur(24px);
   border: 1px solid rgba(255, 255, 255, 0.95);
   border-bottom: 1px solid rgba(240, 183, 190, 0.4);
-  border-radius: 24px;
-  padding: 34px 28px;
+  border-radius: 18px;
+  padding: 22px 18px;
   text-align: right;
   direction: inherit;
   cursor: pointer;
@@ -1290,14 +1291,14 @@ html[dir="ltr"] .role-card {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 18px;
+  margin-bottom: 12px;
 }
 
 .role-type-badge {
-  font-size: 0.72rem;
+  font-size: 0.68rem;
   font-weight: 700;
-  letter-spacing: 0.1em;
-  padding: 4px 12px;
+  letter-spacing: 0.08em;
+  padding: 3px 10px;
   border-radius: var(--radius-pill);
 }
 
@@ -1314,8 +1315,8 @@ html[dir="ltr"] .role-card {
 }
 
 .role-icon-box {
-  width: 52px;
-  height: 52px;
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
   background: rgba(253, 245, 246, 0.8);
   border: 1px solid rgba(240, 183, 190, 0.45);
@@ -1326,26 +1327,31 @@ html[dir="ltr"] .role-card {
   box-shadow: 0 4px 14px rgba(122, 46, 57, 0.08);
 }
 
+.role-icon-box svg {
+  width: 22px;
+  height: 22px;
+}
+
 .role-card-title {
-  font-size: 1.25rem;
+  font-size: 1.08rem;
   font-weight: 700;
   color: var(--text-primary);
-  margin-bottom: 10px;
+  margin-bottom: 6px;
 }
 
 .role-card-desc {
-  font-size: 0.88rem;
+  font-size: 0.82rem;
   color: var(--text-secondary);
-  line-height: 1.6;
-  margin-bottom: 24px;
+  line-height: 1.5;
+  margin-bottom: 16px;
 }
 
 .btn-role-action {
   width: 100%;
   font-family: inherit;
-  font-size: 0.92rem;
+  font-size: 0.85rem;
   font-weight: 600;
-  padding: 12px 20px;
+  padding: 9px 16px;
   border-radius: var(--radius-pill);
   border: none;
   cursor: pointer;
@@ -1639,67 +1645,67 @@ html[dir="ltr"] .role-card {
 @media (max-width: 640px) {
   /* Role Selection Modal Mobile Adjustments */
   .role-modal-overlay {
-    padding: 12px;
+    padding: 10px;
   }
 
   .role-modal-card {
-    padding: 24px 18px;
-    border-radius: 24px;
-    max-height: calc(100vh - 24px);
+    padding: 20px 14px;
+    border-radius: 20px;
+    max-height: calc(100vh - 20px);
   }
 
   .role-modal-top-bar {
-    margin-bottom: 16px;
+    margin-bottom: 12px;
   }
 
   .role-modal-title {
-    font-size: 1.65rem;
-    margin-bottom: 6px;
+    font-size: 1.45rem;
+    margin-bottom: 4px;
   }
 
   .role-modal-subtitle {
-    font-size: 0.85rem;
-    margin-bottom: 20px;
+    font-size: 0.8rem;
+    margin-bottom: 16px;
   }
 
   .role-cards-grid {
     grid-template-columns: 1fr;
-    gap: 14px;
+    gap: 12px;
   }
 
   .role-card {
-    padding: 20px 16px;
-    border-radius: 18px;
+    padding: 16px 14px;
+    border-radius: 16px;
   }
 
   .role-card-header {
-    margin-bottom: 12px;
+    margin-bottom: 10px;
   }
 
   .role-icon-box {
-    width: 44px;
-    height: 44px;
+    width: 38px;
+    height: 38px;
   }
 
   .role-icon-box svg {
-    width: 22px;
-    height: 22px;
+    width: 20px;
+    height: 20px;
   }
 
   .role-card-title {
-    font-size: 1.1rem;
-    margin-bottom: 6px;
+    font-size: 1.0rem;
+    margin-bottom: 4px;
   }
 
   .role-card-desc {
-    font-size: 0.82rem;
-    margin-bottom: 16px;
-    line-height: 1.5;
+    font-size: 0.78rem;
+    margin-bottom: 12px;
+    line-height: 1.45;
   }
 
   .btn-role-action {
-    padding: 10px 16px;
-    font-size: 0.86rem;
+    padding: 9px 14px;
+    font-size: 0.82rem;
   }
 
   .wizard-card {
