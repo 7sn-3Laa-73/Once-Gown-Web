@@ -1106,6 +1106,8 @@ h4,
 .role-modal-card {
   width: 100%;
   max-width: 760px;
+  max-height: calc(100vh - 30px);
+  overflow-y: auto;
   background: rgba(255, 255, 255, 0.88);
   backdrop-filter: blur(40px) saturate(220%);
   -webkit-backdrop-filter: blur(40px) saturate(220%);
@@ -1635,6 +1637,71 @@ html[dir="ltr"] .role-card {
 
 /* Media Query: Standard Mobile Devices (<= 640px) */
 @media (max-width: 640px) {
+  /* Role Selection Modal Mobile Adjustments */
+  .role-modal-overlay {
+    padding: 12px;
+  }
+
+  .role-modal-card {
+    padding: 24px 18px;
+    border-radius: 24px;
+    max-height: calc(100vh - 24px);
+  }
+
+  .role-modal-top-bar {
+    margin-bottom: 16px;
+  }
+
+  .role-modal-title {
+    font-size: 1.65rem;
+    margin-bottom: 6px;
+  }
+
+  .role-modal-subtitle {
+    font-size: 0.85rem;
+    margin-bottom: 20px;
+  }
+
+  .role-cards-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .role-card {
+    padding: 20px 16px;
+    border-radius: 18px;
+  }
+
+  .role-card-header {
+    margin-bottom: 12px;
+  }
+
+  .role-icon-box {
+    width: 44px;
+    height: 44px;
+  }
+
+  .role-icon-box svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  .role-card-title {
+    font-size: 1.1rem;
+    margin-bottom: 6px;
+  }
+
+  .role-card-desc {
+    font-size: 0.82rem;
+    margin-bottom: 16px;
+    line-height: 1.5;
+  }
+
+  .btn-role-action {
+    padding: 10px 16px;
+    font-size: 0.86rem;
+  }
+
   .wizard-card {
     padding: 20px 16px;
     border-radius: 16px;
