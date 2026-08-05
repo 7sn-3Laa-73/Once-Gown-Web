@@ -1,45 +1,115 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Once Gown | منصة إدراج فساتين الموضة الفاخرة</title>
-  <meta name="description" content="المتجر الرئيسي تحت التجهيز والافتتاح قريباً.. أضيفي فستانكِ الآن للعرض الفاخر المبكر" />
+  <title>Once Gown | Luxury Couture Listing Platform</title>
+  <meta name="description" content="List your luxury bridal and evening gowns for priority featuring on Once Gown." />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
 
-  <!-- Fixed Luxury Announcement Bar with Live 20-Day Countdown -->
+  <!-- ROLE SELECTION MODAL OVERLAY -->
+  <div class="role-modal-overlay" id="roleModalOverlay" role="dialog" aria-modal="true">
+    <div class="role-modal-card">
+      
+      <!-- Top Bar Inside Modal (Brand Tag + Dedicated In-Modal Language Switcher) -->
+      <div class="role-modal-top-bar">
+        <div class="role-modal-badge" data-i18n="role.modalTag">ONCE GOWN</div>
+
+        <!-- In-Modal Language Switcher -->
+        <button type="button" class="lang-switch-btn in-modal-lang-btn" id="modalLangSwitchBtn" aria-label="Switch Language">
+          <span class="lang-option active-lang" data-lang="en">EN</span>
+          <span class="lang-sep">|</span>
+          <span class="lang-option" data-lang="ar">العربية</span>
+        </button>
+      </div>
+
+      <h2 class="role-modal-title" data-i18n="role.modalTitle">Select Experience</h2>
+      <p class="role-modal-subtitle" data-i18n="role.modalSubtitle">Welcome to Once Gown Luxury Couture</p>
+
+      <div class="role-cards-grid">
+        <!-- Seller Card -->
+        <div class="role-card role-card-seller" id="btnSelectSeller">
+          <div class="role-card-header">
+            <span class="role-type-badge seller-badge" data-i18n="role.sellerBadge">SELLER</span>
+            <div class="role-icon-box">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M12 2L15 8H9L12 2Z"></path>
+                <path d="M6 11L12 9L18 11V21H6V11Z"></path>
+              </svg>
+            </div>
+          </div>
+          <h3 class="role-card-title" data-i18n="role.sellerTitle">I Want to List a Gown</h3>
+          <p class="role-card-desc" data-i18n="role.sellerDesc">List your bridal or evening gown for rentals and sale.</p>
+          <button type="button" class="btn-role-action btn-seller-action" data-i18n="role.sellerBtn">Start Listing →</button>
+        </div>
+
+        <!-- Buyer Card -->
+        <div class="role-card role-card-buyer" id="btnSelectBuyer">
+          <div class="role-card-header">
+            <span class="role-type-badge buyer-badge" data-i18n="role.buyerBadge">BUYER</span>
+            <div class="role-icon-box">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M6 2L3 6V20C3 20.55 3.45 21 4 21H20C20.55 21 21 20.55 21 20V6L18 2H6Z"></path>
+                <path d="M3 6H21"></path>
+                <path d="M16 10C16 12.21 14.21 14 12 14C9.79 14 8 12.21 8 10"></path>
+              </svg>
+            </div>
+          </div>
+          <h3 class="role-card-title" data-i18n="role.buyerTitle">I Want to Shop Gowns</h3>
+          <p class="role-card-desc" data-i18n="role.buyerDesc">Explore luxury bridal and evening collections.</p>
+          <button type="button" class="btn-role-action btn-buyer-action" data-i18n="role.buyerBtn">Preview Boutique →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Fixed Luxury Announcement Bar with Live Countdown -->
   <div class="top-announcement-bar">
     <span class="top-announcement-pulse"></span>
-    <span>✨ المتجر الرئيسي تحت التجهيز والافتتاح الرسمي خلال:</span>
+    <span data-i18n="bar.openingSoon">Official Boutique Launching Soon</span>:
     
     <div class="bar-countdown-group">
-      <span class="bar-cd-item"><strong id="barDays">20</strong> يوم</span>
-      <span class="bar-cd-item"><strong id="barHours">00</strong> س</span>
-      <span class="bar-cd-item"><strong id="barMinutes">00</strong> د</span>
-      <span class="bar-cd-item"><strong id="barSeconds">00</strong> ث</span>
+      <span class="bar-cd-item"><strong id="barDays">20</strong> <span data-i18n="bar.countdownDays">days</span></span>
+      <span class="bar-cd-item"><strong id="barHours">00</strong> <span data-i18n="bar.countdownHours">hrs</span></span>
+      <span class="bar-cd-item"><strong id="barMinutes">00</strong> <span data-i18n="bar.countdownMinutes">mins</span></span>
+      <span class="bar-cd-item"><strong id="barSeconds">00</strong> <span data-i18n="bar.countdownSeconds">secs</span></span>
     </div>
 
     <span class="bar-divider">|</span>
-    <span>أضيفي فستانكِ الآن ليكون من أول المعروضات الفاخرة عند الانطلاق 👑</span>
+    <span data-i18n="bar.cta">List your gown early for priority feature</span>
   </div>
 
   <!-- Sticky Luxury Header -->
   <header class="luxury-header" role="banner">
     <div class="brand-identity">
       <div class="brand-logo-frame">
-        <img src="assets/logo.jpg" alt="شعار Once Gown" class="brand-logo-img" />
+        <img src="assets/logo.jpg" alt="Once Gown Logo" class="brand-logo-img" />
       </div>
       <div class="brand-name-group">
-        <span class="brand-name brand-title">Once Gown</span>
-        <span class="brand-subtitle">LUXURY COUTURE</span>
+        <span class="brand-name brand-title" data-i18n="header.title">Once Gown</span>
+        <span class="brand-subtitle" data-i18n="header.subtitle">LUXURY COUTURE</span>
       </div>
     </div>
 
-    <div class="header-badge">
-      <span class="header-badge-dot"></span>
-      <span>إضافة فستان جديد</span>
+    <div class="header-right-group" style="display: flex; align-items: center; gap: 12px;">
+      <!-- Header Language Switcher Button -->
+      <button type="button" class="lang-switch-btn" id="langSwitchBtn" aria-label="Switch Language">
+        <span class="lang-option active-lang" data-lang="en">EN</span>
+        <span class="lang-sep">|</span>
+        <span class="lang-option" data-lang="ar">العربية</span>
+      </button>
+
+      <!-- Experience Switcher Button -->
+      <button type="button" class="role-switch-btn" id="btnOpenRoleModal">
+        <span data-i18n="header.switchRole">Change Experience</span>
+      </button>
+
+      <div class="header-badge hidden" id="headerBadgeSeller">
+        <span class="header-badge-dot"></span>
+        <span data-i18n="header.badge">List New Gown</span>
+      </div>
     </div>
   </header>
 
@@ -47,49 +117,92 @@
   <main class="main-container" role="main">
 
     <!-- Progress Indicator Card -->
-    <div class="progress-card">
+    <div class="progress-card hidden" id="sellerProgressCard">
       <div class="progress-header">
-        <span class="step-count-badge" id="stepCountDisplay">الخطوة 1 من 3</span>
-        <span class="step-title-display" id="stepTitleDisplay">البيانات الأساسية وصور الفستان</span>
+        <span class="step-count-badge" id="stepCountDisplay">Step 1 of 4</span>
+        <span class="step-title-display" id="stepTitleDisplay">Imagery & Listing Preference</span>
       </div>
       <div class="progress-track">
         <div class="progress-fill" id="progressFill"></div>
       </div>
     </div>
 
-    <!-- Multi-Step Wizard Container -->
-    <div class="wizard-card" id="wizardCard">
+    <!-- BUYER COMING SOON VIEW (Initially hidden) -->
+    <div class="wizard-card buyer-coming-soon-card hidden" id="buyerComingSoonView">
+      <div class="buyer-badge-tag" data-i18n="buyer.badge">COMING SOON</div>
 
-      <!-- ==================== STEP 1: CORE DATA & MEDIA ==================== -->
+      <h1 class="buyer-title" data-i18n="buyer.title">Boutique Under Construction</h1>
+      <p class="buyer-subtitle" data-i18n="buyer.subtitle">We are curating an exclusive haute couture collection.</p>
+
+      <!-- Blurred Website Storefront Mockup under construction -->
+      <div class="blurred-storefront-frame">
+        <div class="blurred-website-bg">
+          <div class="website-header-preview">
+            <span class="mock-logo">ONCE GOWN</span>
+            <span class="mock-nav">BRIDAL • EVENING • COUTURE</span>
+          </div>
+          <div class="website-grid-preview">
+            <div class="mock-card"></div>
+            <div class="mock-card"></div>
+            <div class="mock-card"></div>
+          </div>
+        </div>
+        <div class="storefront-glass-overlay">
+          <span class="coming-soon-glass-badge" data-i18n="buyer.badge">WEBSITE COMING SOON</span>
+        </div>
+      </div>
+
+      <!-- VIP Notification Form -->
+      <div class="vip-subscribe-card">
+        <label class="vip-label" data-i18n="buyer.vipLabel">Get VIP Launch Access</label>
+        <div class="vip-input-group">
+          <input type="email" id="buyerVipEmail" class="form-input vip-email-input" data-i18n-placeholder="buyer.emailPlaceholder" placeholder="Enter your email..." />
+          <button type="button" class="btn-luxury btn-primary-gold" id="btnSubscribeVip" data-i18n="buyer.notifyBtn">Notify Me</button>
+        </div>
+        <div id="vipSubscribeMsg" class="vip-success-msg hidden" data-i18n="buyer.notifySuccess">VIP Priority Saved.</div>
+      </div>
+
+      <!-- Switch to Seller Prompt -->
+      <div class="buyer-seller-prompt-card">
+        <p class="prompt-text" data-i18n="buyer.sellerPrompt">Have a gown to list early?</p>
+        <button type="button" class="btn-luxury btn-secondary-outline" id="btnSwitchToSellerFromBuyer" data-i18n="buyer.switchToSeller">List Gown Now</button>
+      </div>
+    </div>
+
+    <!-- Multi-Step Wizard Container (Hidden initially until role selected) -->
+    <div class="wizard-card hidden" id="wizardCard">
+
+      <!-- ==================== STEP 1: DRESS PHOTOS & LISTING TYPE ==================== -->
       <div class="step-pane active" id="stepPane1">
         <div class="step-heading-group">
-          <div class="step-number-tag">الخطوة 01</div>
-          <h1 class="step-title">البيانات الأساسية وصور الفستان</h1>
-          <p class="step-subtitle">أضيفي صور الفستان وبياناتك الأساسية للبدء في عرضه راقياً</p>
+          <div class="step-number-tag" data-i18n="step1.tag">STEP 01</div>
+          <h1 class="step-title" data-i18n="step1.title">Showcase Your Gown</h1>
+          <p class="step-subtitle" data-i18n="step1.subtitle">Upload high-resolution photography to highlight the beauty and craftsmanship of your piece</p>
         </div>
 
         <div class="form-grid">
 
-          <!-- 1. MEDIA UPLOAD -->
-          <div class="form-group col-span-2" id="imageUploadArea" style="margin-bottom: 20px;">
-            <label class="form-label" style="font-size: 1.1rem; font-weight: 700; color: var(--gold-dark);">
-              📸 صور الفستان (أول وأهم خطوة) <span class="form-label-required">*</span>
+          <!-- MEDIA UPLOAD -->
+          <div class="form-group col-span-2" id="imageUploadArea" style="margin-bottom: 12px;">
+            <label class="form-label" style="font-size: 1.05rem; font-weight: 700; color: var(--rose-deep);">
+              <span data-i18n="step1.uploadLabel">Gown Photography (Cover photo first)</span> <span class="form-label-required">*</span>
             </label>
             <div class="upload-dropzone" id="uploadDropzone">
               <div class="upload-icon-box">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                   <rect x="3" y="3" width="18" height="18" rx="4"></rect>
                   <circle cx="8.5" cy="8.5" r="1.5"></circle>
                   <polyline points="21 15 16 10 5 21"></polyline>
                 </svg>
               </div>
-              <div class="upload-title">اسحبي صور الفستان هنا أو اضغطي للاختيار</div>
-              <div class="upload-subtitle">ارفعي من 1 إلى 10 صور عالية الجودة لبيان جمال الفستان</div>
-              <input type="file" id="imageFileInput" multiple accept="image/*" class="hidden" />
+              <div class="upload-title" data-i18n="step1.uploadTitle">Drag photography here or click to browse</div>
+              <div class="upload-subtitle" data-i18n="step1.uploadSubtitle">Upload up to 10 high-quality photos capturing key details and silhouettes</div>
             </div>
 
-            <div class="helper-text" style="margin-top: 8px;">
-              <span class="helper-text-icon">💡</span> احرصي أن تكون الصورة الأولى هي الأوضح لأنها ستكون واجهة إعلانك الرئيسية.
+            <input type="file" id="imageFileInput" multiple accept="image/*" class="hidden" />
+
+            <div class="helper-text" style="margin-top: 10px;">
+              <span class="helper-text-icon">•</span> <span data-i18n="step1.uploadHelper">Select your finest photo as the cover image to attract premium buyers.</span>
             </div>
             <div class="error-message"></div>
 
@@ -97,423 +210,344 @@
             <div class="image-preview-grid" id="imagePreviewGrid"></div>
           </div>
 
-          <!-- 2. OWNER INFO SECTION -->
-          <div class="section-divider col-span-2"><span>بيانات المالكة والتواصل</span></div>
-
-          <!-- Owner Full Name -->
-          <div class="form-group col-span-2" id="ownerNameGroup">
-            <label class="form-label" for="ownerName">الاسم بالكامل <span class="form-label-required">*</span></label>
-            <input type="text" id="ownerName" name="ownerName" class="form-input" placeholder="مثال: ياسمين أحمد محمود" />
-            <div class="error-message"></div>
-          </div>
-
-          <!-- WhatsApp -->
-          <div class="form-group" id="phoneGroup">
-            <label class="form-label" for="phone">رقم الواتساب <span class="form-label-required">*</span></label>
-            <input type="tel" id="phone" name="phone" class="form-input" placeholder="01012345678" />
-            <div class="helper-text"><span class="helper-text-icon">🔒</span> لن يظهر رقمك للعامة مطلقاً</div>
-            <div class="error-message"></div>
-          </div>
-
-          <!-- Secondary Phone -->
-          <div class="form-group">
-            <label class="form-label" for="secondPhone">رقم هاتف إضافي (اختياري)</label>
-            <input type="tel" id="secondPhone" name="secondPhone" class="form-input" placeholder="01187654321" />
-          </div>
-
-          <!-- Governorate -->
-          <div class="form-group" id="governorateGroup">
-            <label class="form-label" for="governorate">المحافظة <span class="form-label-required">*</span></label>
-            <select id="governorate" name="governorate" class="form-select">
-              <option value="">اختر المحافظة...</option>
-              <option value="القاهرة">القاهرة</option>
-              <option value="الجيزة">الجيزة</option>
-              <option value="الإسكندرية">الإسكندرية</option>
-              <option value="الدقهلية">الدقهلية</option>
-              <option value="الشرقية">الشرقية</option>
-              <option value="القليوبية">القليوبية</option>
-              <option value="الغربية">الغربية</option>
-              <option value="المنوفية">المنوفية</option>
-              <option value="البحيرة">البحيرة</option>
-              <option value="كفر الشيخ">كفر الشيخ</option>
-              <option value="الإسماعيلية">الإسماعيلية</option>
-              <option value="بورسعيد">بورسعيد</option>
-              <option value="السويس">السويس</option>
-              <option value="الفيوم">الفيوم</option>
-              <option value="بني سويف">بني سويف</option>
-              <option value="المنيا">المنيا</option>
-              <option value="أسيوط">أسيوط</option>
-              <option value="سوهاج">سوهاج</option>
-              <option value="قنا">قنا</option>
-              <option value="الأقصر">الأقصر</option>
-              <option value="أسوان">أسوان</option>
-            </select>
-            <div class="error-message"></div>
-          </div>
-
-          <!-- City -->
-          <div class="form-group" id="cityGroup">
-            <label class="form-label" for="city">المدينة / المنطقة <span class="form-label-required">*</span></label>
-            <input type="text" id="city" name="city" class="form-input" placeholder="مثال: التجمع الخامس، المعادي، مصر الجديدة..." />
-            <div class="error-message"></div>
-          </div>
-
-          <!-- Detailed Address -->
-          <div class="form-group col-span-2" id="addressGroup">
-            <label class="form-label" for="address">العنوان بالتفصيل <span class="form-label-required">*</span></label>
-            <textarea id="address" name="address" class="form-textarea" style="min-height: 80px;" placeholder="اكتبي العنوان التفصيلي لشحن أو معاينة الفستان"></textarea>
-            <div class="helper-text"><span class="helper-text-icon">💡</span> لن يتم مشاركة عنوانك إلا بعد إتمام الاتفاق.</div>
-            <div class="error-message"></div>
-          </div>
-
-          <!-- 3. PRICING SECTION -->
-          <div class="section-divider col-span-2"><span>تفاصيل الأسعار ونوع العرض</span></div>
-
-          <!-- Listing Type -->
+          <!-- LISTING TYPE -->
           <div class="form-group col-span-2">
-            <label class="form-label">نوع العرض <span class="form-label-required">*</span></label>
+            <label class="form-label" data-i18n="step1.listingTypeLabel">Listing Preference <span class="form-label-required">*</span></label>
             <div class="chip-grid">
               <label class="luxury-chip-option">
                 <input type="radio" name="listingType" value="للإيجار والبيع" checked />
-                <span class="chip-label">للإيجار والبيع</span>
+                <span class="chip-label" data-i18n="listing.rentAndSell">Rent & Sale</span>
               </label>
               <label class="luxury-chip-option">
                 <input type="radio" name="listingType" value="للإيجار" />
-                <span class="chip-label">للإيجار فقط</span>
+                <span class="chip-label" data-i18n="listing.rentOnly">Rent Only</span>
               </label>
               <label class="luxury-chip-option">
                 <input type="radio" name="listingType" value="للبيع" />
-                <span class="chip-label">للبيع فقط</span>
+                <span class="chip-label" data-i18n="listing.sellOnly">Sale Only</span>
               </label>
             </div>
           </div>
 
-          <!-- Rent Price -->
-          <div class="form-group" id="rentPriceGroup">
-            <label class="form-label" for="rentPrice">سعر الإيجار (بالجنيه) <span class="form-label-required">*</span></label>
-            <input type="number" id="rentPrice" name="rentPrice" class="form-input" placeholder="3500" />
-            <div class="error-message"></div>
-          </div>
+        </div>
+      </div>
 
-          <!-- Duration -->
-          <div class="form-group">
-            <label class="form-label" for="rentDuration">مدة الإيجار</label>
-            <select id="rentDuration" name="rentDuration" class="form-select">
-              <option value="3 أيام">3 أيام</option>
-              <option value="5 أيام">5 أيام</option>
-              <option value="أسبوع">أسبوع كامل</option>
-            </select>
-          </div>
+      <!-- ==================== STEP 2: DRESS SPECS & PRICING ==================== -->
+      <div class="step-pane" id="stepPane2">
+        <div class="step-heading-group">
+          <div class="step-number-tag" data-i18n="step2.tag">STEP 02</div>
+          <h2 class="step-title" data-i18n="step2.title">Specifications & Valuation</h2>
+          <p class="step-subtitle" data-i18n="step2.subtitle">Define color palette, sizing, designer atelier, and desired pricing</p>
+        </div>
 
-          <!-- Sell Price (Optional) -->
-          <div class="form-group" id="sellPriceGroup">
-            <label class="form-label" for="sellPrice">سعر البيع (بالجنيه) <span style="color: var(--text-muted); font-size: 0.8rem; font-weight: normal;">(اختياري)</span></label>
-            <input type="number" id="sellPrice" name="sellPrice" class="form-input" placeholder="12000" />
-            <div class="error-message"></div>
-          </div>
+        <div class="form-grid">
 
-          <!-- Deposit -->
-          <div class="form-group">
-            <label class="form-label" for="deposit">قيمة التأمين المسترد <span style="color: var(--text-muted); font-size: 0.8rem; font-weight: normal;">(اختياري)</span></label>
-            <input type="number" id="deposit" name="deposit" class="form-input" placeholder="1000" />
-          </div>
-
-          <!-- 4. DRESS SPECIFICATIONS SECTION -->
-          <div class="section-divider col-span-2"><span>مواصفات الفستان</span></div>
-
-          <!-- Dress Category -->
-          <div class="form-group col-span-2" id="dressCategoryGroup">
-            <label class="form-label">المناسبة <span class="form-label-required">*</span></label>
-            <div class="chip-grid">
-              <label class="luxury-chip-option">
-                <input type="radio" name="dressCategory" value="فستان زفاف" />
-                <span class="chip-label">زفاف 👰</span>
-              </label>
-              <label class="luxury-chip-option">
-                <input type="radio" name="dressCategory" value="فستان خطوبة" />
-                <span class="chip-label">خطوبة 💍</span>
-              </label>
-              <label class="luxury-chip-option">
-                <input type="radio" name="dressCategory" value="فستان سواريه / سهرة" />
-                <span class="chip-label">سواريه / سهرة ✨</span>
-              </label>
-              <label class="luxury-chip-option">
-                <input type="radio" name="dressCategory" value="فستان تخرج" />
-                <span class="chip-label">تخرج 🎓</span>
-              </label>
-              <label class="luxury-chip-option">
-                <input type="radio" name="dressCategory" value="مناسبة أخرى" />
-                <span class="chip-label">أخرى ✨</span>
-              </label>
-            </div>
-            <div class="error-message"></div>
-          </div>
-
-          <!-- Color Swatches & Custom Color Picker -->
+          <!-- COLOR SELECTION -->
           <div class="form-group col-span-2" id="colorGroup">
-            <label class="form-label">لون الفستان <span class="form-label-required">*</span></label>
+            <label class="form-label" data-i18n="step2.colorLabel">Primary Color Palette <span class="form-label-required">*</span></label>
             <div class="color-swatch-grid">
               <label class="color-swatch-card">
                 <input type="radio" name="color" value="أبيض لؤلؤي" />
                 <div class="color-swatch-label">
                   <div class="color-dot" style="background: #FFFFFF;"></div>
-                  <span class="color-name">أبيض لؤلؤي</span>
+                  <span class="color-name" data-i18n="color.pearlWhite">Pearl White</span>
                 </div>
               </label>
               <label class="color-swatch-card">
                 <input type="radio" name="color" value="أوف وايت" />
                 <div class="color-swatch-label">
                   <div class="color-dot" style="background: #FDFBF7;"></div>
-                  <span class="color-name">أوف وايت</span>
+                  <span class="color-name" data-i18n="color.offWhite">Off-White</span>
                 </div>
               </label>
               <label class="color-swatch-card">
                 <input type="radio" name="color" value="شامبين" />
                 <div class="color-swatch-label">
                   <div class="color-dot" style="background: #F5E6CA;"></div>
-                  <span class="color-name">شامبين</span>
+                  <span class="color-name" data-i18n="color.champagne">Champagne</span>
+                </div>
+              </label>
+              <label class="color-swatch-card">
+                <input type="radio" name="color" value="وردي / بينك" />
+                <div class="color-swatch-label">
+                  <div class="color-dot" style="background: #F0B7BE;"></div>
+                  <span class="color-name" data-i18n="color.roseBlush">Rose Blush</span>
                 </div>
               </label>
               <label class="color-swatch-card">
                 <input type="radio" name="color" value="ذهبي" />
                 <div class="color-swatch-label">
                   <div class="color-dot" style="background: #D4AF37;"></div>
-                  <span class="color-name">ذهبي</span>
+                  <span class="color-name" data-i18n="color.gold">Gold</span>
                 </div>
               </label>
               <label class="color-swatch-card">
                 <input type="radio" name="color" value="فضي" />
                 <div class="color-swatch-label">
                   <div class="color-dot" style="background: #E0E0E0;"></div>
-                  <span class="color-name">فضي</span>
+                  <span class="color-name" data-i18n="color.silver">Silver</span>
                 </div>
               </label>
               <label class="color-swatch-card">
-                <input type="radio" name="color" value="وردي / بينك" />
-                <div class="color-swatch-label">
-                  <div class="color-dot" style="background: #FFD1DC;"></div>
-                  <span class="color-name">وردي</span>
-                </div>
-              </label>
-              <label class="color-swatch-card">
-                <input type="radio" name="color" value="أحمر / نبيتي" />
+                <input type="radio" name="color" value="نبيتي / أحمر" />
                 <div class="color-swatch-label">
                   <div class="color-dot" style="background: #800020;"></div>
-                  <span class="color-name">نبيتي</span>
+                  <span class="color-name" data-i18n="color.burgundy">Burgundy</span>
                 </div>
               </label>
               <label class="color-swatch-card">
                 <input type="radio" name="color" value="أسود" />
                 <div class="color-swatch-label">
-                  <div class="color-dot" style="background: #1C1815;"></div>
-                  <span class="color-name">أسود</span>
-                </div>
-              </label>
-              <label class="color-swatch-card">
-                <input type="radio" name="color" value="كحلي" />
-                <div class="color-swatch-label">
-                  <div class="color-dot" style="background: #0A192F;"></div>
-                  <span class="color-name">كحلي</span>
-                </div>
-              </label>
-              <label class="color-swatch-card">
-                <input type="radio" name="color" value="أخضر زمردي" />
-                <div class="color-swatch-label">
-                  <div class="color-dot" style="background: #1B4D3E;"></div>
-                  <span class="color-name">زمردي</span>
+                  <div class="color-dot" style="background: #2B181B;"></div>
+                  <span class="color-name" data-i18n="color.black">Black</span>
                 </div>
               </label>
             </div>
 
             <!-- Custom Color Picker Box -->
-            <div style="margin-top: 12px; display: flex; align-items: center; gap: 12px;">
-              <span style="font-size: 0.85rem; color: var(--text-secondary);">أو اختاري لون مخصص:</span>
-              <input type="color" id="customColorPicker" class="color-picker-input" value="#D4AF37" />
-              <span id="customColorText" style="font-size: 0.85rem; font-weight: 600; color: var(--gold-dark);"></span>
+            <div style="margin-top: 14px; display: flex; align-items: center; gap: 12px;">
+              <span style="font-size: 0.88rem; color: var(--text-secondary);" data-i18n="step2.colorCustomLabel">Or select custom color:</span>
+              <input type="color" id="customColorPicker" class="color-picker-input" value="#F0B7BE" />
+              <span id="customColorText" style="font-size: 0.88rem; font-weight: 600; color: var(--rose-deep);"></span>
             </div>
             <div class="error-message"></div>
           </div>
 
-          <!-- Brand -->
-          <div class="form-group">
-            <label class="form-label" for="brand">الماركة / المصمم</label>
-            <input type="text" id="brand" name="brand" class="form-input" placeholder="مثال: Dior, Temraza, Hany El Behairy..." />
+          <!-- PRICING DETAILS SECTION -->
+          <div class="section-divider col-span-2"><span data-i18n="step2.pricingDivider">Valuation & Pricing</span></div>
+
+          <!-- Rent Price -->
+          <div class="form-group" id="rentPriceGroup">
+            <label class="form-label" for="rentPrice"><span data-i18n="step2.rentPriceLabel">Rental Fee (EGP)</span> <span class="form-label-required">*</span></label>
+            <input type="number" id="rentPrice" name="rentPrice" class="form-input" data-i18n-placeholder="step2.rentPricePlaceholder" placeholder="e.g. 3,500" />
+            <div class="error-message"></div>
           </div>
+
+          <!-- Sell Price -->
+          <div class="form-group" id="sellPriceGroup">
+            <label class="form-label" for="sellPrice"><span data-i18n="step2.sellPriceLabel">Sale Price (EGP)</span> <span style="color: var(--text-muted); font-size: 0.8rem; font-weight: normal;" data-i18n="step2.sellPriceOptional">(Optional)</span></label>
+            <input type="number" id="sellPrice" name="sellPrice" class="form-input" data-i18n-placeholder="step2.sellPricePlaceholder" placeholder="e.g. 12,000" />
+            <div class="error-message"></div>
+          </div>
+
+          <!-- DRESS SPECIFICATIONS SECTION -->
+          <div class="section-divider col-span-2"><span data-i18n="step2.specsDivider">Sizing & Atelier</span></div>
 
           <!-- Size -->
           <div class="form-group">
-            <label class="form-label" for="size">المقاس المكتوب</label>
+            <label class="form-label" for="size" data-i18n="step2.sizeLabel">Label Size</label>
             <select id="size" name="size" class="form-select">
-              <option value="">اختر المقاس...</option>
+              <option value="" data-i18n="step2.sizeSelectDefault">Select Size...</option>
               <option value="XS (34)">XS (34)</option>
               <option value="S (36)">S (36)</option>
               <option value="M (38)">M (38)</option>
               <option value="L (40)">L (40)</option>
               <option value="XL (42)">XL (42)</option>
               <option value="XXL (44)">XXL (44)</option>
-              <option value="تفصيل / مقاس خاص">تفصيل / مقاس خاص</option>
+              <option value="تفصيل / مقاس خاص" data-i18n="step2.sizeCustom">Bespoke / Custom Fit</option>
             </select>
+          </div>
+
+          <!-- Brand -->
+          <div class="form-group">
+            <label class="form-label" for="brand" data-i18n="step2.brandLabel">Designer / Maison</label>
+            <input type="text" id="brand" name="brand" class="form-input" data-i18n-placeholder="step2.brandPlaceholder" placeholder="e.g. Dior, Temraza, Hany El Behairy..." />
           </div>
 
           <!-- Weight -->
           <div class="form-group">
-            <label class="form-label" for="weightRange">يلبس تقريباً كام كيلو؟</label>
-            <input type="text" id="weightRange" name="weightRange" class="form-input" placeholder="مثال: 55 - 65 كجم" />
+            <label class="form-label" for="weightRange" data-i18n="step2.weightLabel">Recommended Weight</label>
+            <input type="text" id="weightRange" name="weightRange" class="form-input" data-i18n-placeholder="step2.weightPlaceholder" placeholder="e.g. 55 - 65 kg" />
           </div>
 
           <!-- Height -->
           <div class="form-group">
-            <label class="form-label" for="heightRange">مناسب لطول كام؟</label>
-            <input type="text" id="heightRange" name="heightRange" class="form-input" placeholder="مثال: 160 - 170 سم" />
-          </div>
-
-          <!-- Fabric (Optional) -->
-          <div class="form-group col-span-2">
-            <label class="form-label" for="fabric">نوع الخامة <span style="color: var(--text-muted); font-size: 0.8rem; font-weight: normal;">(اختياري)</span></label>
-            <input type="text" id="fabric" name="fabric" class="form-input" placeholder="مثال: ساتان حريري، دانتيل، أورجانزا..." />
+            <label class="form-label" for="heightRange" data-i18n="step2.heightLabel">Recommended Height</label>
+            <input type="text" id="heightRange" name="heightRange" class="form-input" data-i18n-placeholder="step2.heightPlaceholder" placeholder="e.g. 160 - 170 cm" />
           </div>
 
           <!-- Ready / Tailored -->
           <div class="form-group col-span-2">
-            <label class="form-label">جاهز أم تفصيل؟</label>
+            <label class="form-label" data-i18n="step2.readyOrTailoredLabel">Couture Type</label>
             <div class="chip-grid">
               <label class="luxury-chip-option">
                 <input type="radio" name="readyOrTailored" value="جاهز" checked />
-                <span class="chip-label">جاهز</span>
+                <span class="chip-label" data-i18n="step2.ready">Ready-to-wear</span>
               </label>
               <label class="luxury-chip-option">
                 <input type="radio" name="readyOrTailored" value="تفصيل" />
-                <span class="chip-label">تفصيل</span>
+                <span class="chip-label" data-i18n="step2.tailored">Bespoke / Tailored</span>
               </label>
             </div>
           </div>
 
           <!-- Tailor Name -->
           <div class="form-group col-span-2 hidden" id="tailorNameGroup">
-            <label class="form-label" for="tailorName">اسم الأتيليه / مصمم التفصيل</label>
-            <input type="text" id="tailorName" name="tailorName" class="form-input" placeholder="اكتبي اسم الأتيليه" />
-          </div>
-
-          <!-- 5. ADDITIONAL NOTES -->
-          <div class="form-group col-span-2" style="margin-top: 12px;">
-            <label class="form-label" for="notes">ملاحظات إضافية للعميلة <span style="color: var(--text-muted); font-size: 0.8rem; font-weight: normal;">(اختياري)</span></label>
-            <textarea id="notes" name="notes" class="form-textarea" style="min-height: 80px;" placeholder="أي تعليمات خاصة بالعناية أو طريقة الشحن والتسليم..."></textarea>
+            <label class="form-label" for="tailorName" data-i18n="step2.tailorNameLabel">Atelier / Designer Name</label>
+            <input type="text" id="tailorName" name="tailorName" class="form-input" data-i18n-placeholder="step2.tailorNamePlaceholder" placeholder="Enter atelier or designer name" />
           </div>
 
         </div>
       </div>
 
-      <!-- ==================== STEP 2: OPTIONAL DETAILS ==================== -->
-      <div class="step-pane" id="stepPane2">
+      <!-- ==================== STEP 3: OWNER INFO & LOCATION ==================== -->
+      <div class="step-pane" id="stepPane3">
         <div class="step-heading-group">
-          <div class="step-number-tag">الخطوة 02</div>
-          <h2 class="step-title">تفاصيل اختيارية إضافية</h2>
-          <p class="step-subtitle">جميع حقول هذه الصفحة اختيارية تماماً، يمكنك تعبئتها لزيادة إقبال العميلات</p>
+          <div class="step-number-tag" data-i18n="step3.tag">STEP 03</div>
+          <h2 class="step-title" data-i18n="step3.title">Client Identity & Location</h2>
+          <p class="step-subtitle" data-i18n="step3.subtitle">Your contact details are stored securely for private concierge coordination</p>
         </div>
 
         <div class="form-grid">
+
+          <!-- Owner Full Name -->
+          <div class="form-group col-span-2" id="ownerNameGroup">
+            <label class="form-label" for="ownerName"><span data-i18n="step3.ownerNameLabel">Full Name</span> <span class="form-label-required">*</span></label>
+            <input type="text" id="ownerName" name="ownerName" class="form-input" data-i18n-placeholder="step3.ownerNamePlaceholder" placeholder="e.g. Yasmine Ahmed Mahmoud" />
+            <div class="error-message"></div>
+          </div>
+
+          <!-- WhatsApp -->
+          <div class="form-group" id="phoneGroup">
+            <label class="form-label" for="phone"><span data-i18n="step3.phoneLabel">WhatsApp Number</span> <span class="form-label-required">*</span></label>
+            <input type="tel" id="phone" name="phone" class="form-input" data-i18n-placeholder="step3.phonePlaceholder" placeholder="01012345678" />
+            <div class="helper-text"><span class="helper-text-icon">•</span> <span data-i18n="step3.phoneHelper">Your phone number remains strictly private and confidential</span></div>
+            <div class="error-message"></div>
+          </div>
+
+          <!-- Secondary Phone -->
+          <div class="form-group">
+            <label class="form-label" for="secondPhone" data-i18n="step3.secondPhoneLabel">Alternative Contact (Optional)</label>
+            <input type="tel" id="secondPhone" name="secondPhone" class="form-input" data-i18n-placeholder="step3.secondPhonePlaceholder" placeholder="01187654321" />
+          </div>
+
+          <!-- Governorate -->
+          <div class="form-group" id="governorateGroup">
+            <label class="form-label" for="governorate"><span data-i18n="step3.governorateLabel">Governorate</span> <span class="form-label-required">*</span></label>
+            <select id="governorate" name="governorate" class="form-select">
+              <option value="" data-i18n="step3.governorateDefault">Select Governorate...</option>
+              <option value="القاهرة">القاهرة / Cairo</option>
+              <option value="الجيزة">الجيزة / Giza</option>
+              <option value="الإسكندرية">الإسكندرية / Alexandria</option>
+              <option value="الدقهلية">الدقهلية / Dakahlia</option>
+              <option value="الشرقية">الشرقية / Sharqia</option>
+              <option value="القليوبية">القليوبية / Qalyubia</option>
+              <option value="الغربية">الغربية / Gharbia</option>
+              <option value="المنوفية">المنوفية / Monufia</option>
+              <option value="البحيرة">البحيرة / Beheira</option>
+              <option value="كفر الشيخ">كفر الشيخ / Kafr El Sheikh</option>
+              <option value="الإسماعيلية">الإسماعيلية / Ismailia</option>
+              <option value="بورسعيد">بورسعيد / Port Said</option>
+              <option value="السويس">السويس / Suez</option>
+              <option value="الفيوم">الفيوم / Fayoum</option>
+              <option value="بني سويف">بني سويف / Beni Suef</option>
+              <option value="المنيا">المنيا / Minya</option>
+              <option value="أسيوط">أسيوط / Asyut</option>
+              <option value="سوهاج">سوهاج / Sohag</option>
+              <option value="قنا">قنا / Qena</option>
+              <option value="الأقصر">الأقصر / Luxor</option>
+              <option value="أسوان">أسوان / Aswan</option>
+            </select>
+            <div class="error-message"></div>
+          </div>
+
+          <!-- City -->
+          <div class="form-group" id="cityGroup">
+            <label class="form-label" for="city"><span data-i18n="step3.cityLabel">District / City</span> <span class="form-label-required">*</span></label>
+            <input type="text" id="city" name="city" class="form-input" data-i18n-placeholder="step3.cityPlaceholder" placeholder="e.g. 5th Settlement, Maadi, Heliopolis..." />
+            <div class="error-message"></div>
+          </div>
+
+          <!-- Detailed Address -->
+          <div class="form-group col-span-2" id="addressGroup">
+            <label class="form-label" for="address"><span data-i18n="step3.addressLabel">Detailed Address</span> <span class="form-label-required">*</span></label>
+            <textarea id="address" name="address" class="form-textarea" style="min-height: 85px;" data-i18n-placeholder="step3.addressPlaceholder" placeholder="Enter detailed pickup address for private courier coordination"></textarea>
+            <div class="helper-text"><span class="helper-text-icon">•</span> <span data-i18n="step3.addressHelper">Address details shared only upon confirmed reservation.</span></div>
+            <div class="error-message"></div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ==================== STEP 4: REVIEW & SUBMIT ==================== -->
+      <div class="step-pane" id="stepPane4">
+        <div class="step-heading-group">
+          <div class="step-number-tag" data-i18n="step4.tag">STEP 04</div>
+          <h2 class="step-title" data-i18n="step4.title">Review & Authorization</h2>
+          <p class="step-subtitle" data-i18n="step4.subtitle">Verify your gown specifications and privacy terms before final submission</p>
+        </div>
+
+        <div class="form-grid" style="margin-bottom: 24px;">
+
           <!-- Condition -->
           <div class="form-group col-span-2">
-            <label class="form-label">حالة الفستان <span style="color: var(--text-muted); font-size: 0.8rem; font-weight: normal;">(اختياري)</span></label>
+            <label class="form-label" data-i18n="step4.conditionLabel">Garment Condition</label>
             <div class="chip-grid">
               <label class="luxury-chip-option">
                 <input type="radio" name="condition" value="جديد (بالتكت)" checked />
-                <span class="chip-label">جديد بالتكت ✨</span>
+                <span class="chip-label" data-i18n="step4.conditionNew">New (With Tags)</span>
               </label>
               <label class="luxury-chip-option">
                 <input type="radio" name="condition" value="لبس مرة واحدة" />
-                <span class="chip-label">لبس مرة واحدة 👌</span>
+                <span class="chip-label" data-i18n="step4.conditionWornOnce">Worn Once</span>
               </label>
               <label class="luxury-chip-option">
                 <input type="radio" name="condition" value="لبس مرتين" />
-                <span class="chip-label">لبس مرتين</span>
+                <span class="chip-label" data-i18n="step4.conditionWornTwice">Worn Twice</span>
               </label>
               <label class="luxury-chip-option">
                 <input type="radio" name="condition" value="أكثر من مرتين" />
-                <span class="chip-label">أكثر من مرتين</span>
+                <span class="chip-label" data-i18n="step4.conditionWornMore">Worn 3+ Times</span>
               </label>
             </div>
           </div>
 
           <!-- Defects -->
           <div class="form-group col-span-2">
-            <label class="form-label">هل يوجد أي عيوب بالفستان؟ <span style="color: var(--text-muted); font-size: 0.8rem; font-weight: normal;">(اختياري)</span></label>
+            <label class="form-label" data-i18n="step4.defectsLabel">Flaws or Minor Notes?</label>
             <div class="chip-grid">
               <label class="luxury-chip-option">
                 <input type="radio" name="hasDefects" value="لا" checked />
-                <span class="chip-label">لا، بحالة ممتازة</span>
+                <span class="chip-label" data-i18n="step4.defectsNo">Flawless Condition</span>
               </label>
               <label class="luxury-chip-option">
                 <input type="radio" name="hasDefects" value="نعم" />
-                <span class="chip-label">نعم، يوجد عيوب بسيطة</span>
+                <span class="chip-label" data-i18n="step4.defectsYes">Minor Notes Present</span>
               </label>
             </div>
           </div>
 
           <div class="form-group col-span-2 hidden" id="defectDetailsGroup">
-            <label class="form-label" for="defectDetails">اشرحي العيوب الموجودة <span style="color: var(--text-muted); font-size: 0.8rem; font-weight: normal;">(اختياري)</span></label>
-            <textarea id="defectDetails" name="defectDetails" class="form-textarea" placeholder="مثال: بقعة بسيطة غير ملحوظة..."></textarea>
+            <label class="form-label" for="defectDetails" data-i18n="step4.defectDetailsLabel">Notes Description</label>
+            <textarea id="defectDetails" name="defectDetails" class="form-textarea" data-i18n-placeholder="step4.defectDetailsPlaceholder" placeholder="Describe any minor mark or note near hemline..."></textarea>
           </div>
 
           <!-- Alterations -->
           <div class="form-group col-span-2">
-            <label class="form-label">هل تسمحين بتعديل بسيط؟ <span style="color: var(--text-muted); font-size: 0.8rem; font-weight: normal;">(اختياري)</span></label>
+            <label class="form-label" data-i18n="step4.alterationsLabel">Allow Minor Custom Fitting?</label>
             <div class="chip-grid">
               <label class="luxury-chip-option">
                 <input type="radio" name="alterationsAllowed" value="نعم" checked />
-                <span class="chip-label">نعم</span>
+                <span class="chip-label" data-i18n="step4.alterationsYes">Yes</span>
               </label>
               <label class="luxury-chip-option">
                 <input type="radio" name="alterationsAllowed" value="لا" />
-                <span class="chip-label">لا</span>
+                <span class="chip-label" data-i18n="step4.alterationsNo">No</span>
               </label>
             </div>
           </div>
 
           <div class="form-group col-span-2 hidden" id="alterationDetailsGroup">
-            <label class="form-label" for="alterationDetails">اشرحي التعديلات المسموح بها <span style="color: var(--text-muted); font-size: 0.8rem; font-weight: normal;">(اختياري)</span></label>
-            <textarea id="alterationDetails" name="alterationDetails" class="form-textarea" placeholder="مثال: سراجة مؤقتة، تقصير بسيط..."></textarea>
+            <label class="form-label" for="alterationDetails" data-i18n="step4.alterationDetailsLabel">Permitted Alterations</label>
+            <textarea id="alterationDetails" name="alterationDetails" class="form-textarea" data-i18n-placeholder="step4.alterationDetailsPlaceholder" placeholder="e.g. Temporary basting or slight hem adjustment..."></textarea>
           </div>
 
-          <!-- Accessories -->
+          <!-- Notes -->
           <div class="form-group col-span-2">
-            <label class="form-label">حددي الملحقات والإكسسوارات المرفقة مع الفستان <span style="color: var(--text-muted); font-size: 0.8rem; font-weight: normal;">(اختياري)</span></label>
-            <div class="chip-grid">
-              <label class="luxury-chip-option">
-                <input type="checkbox" name="accessories" value="الطرحة" />
-                <span class="chip-label">الطرحة 👰</span>
-              </label>
-              <label class="luxury-chip-option">
-                <input type="checkbox" name="accessories" value="الحزام" />
-                <span class="chip-label">الحزام 🎀</span>
-              </label>
-              <label class="luxury-chip-option">
-                <input type="checkbox" name="accessories" value="الجوانتي" />
-                <span class="chip-label">الجوانتي 🧤</span>
-              </label>
-              <label class="luxury-chip-option">
-                <input type="checkbox" name="accessories" value="الشال / الكاب" />
-                <span class="chip-label">الشال / الكاب 🧣</span>
-              </label>
-              <label class="luxury-chip-option">
-                <input type="checkbox" name="accessories" value="الإكسسوارات" />
-                <span class="chip-label">الإكسسوارات 👑</span>
-              </label>
-              <label class="luxury-chip-option">
-                <input type="checkbox" name="accessories" value="الجيبونة" />
-                <span class="chip-label">الجيبونة 👗</span>
-              </label>
-            </div>
+            <label class="form-label" for="notes" data-i18n="step4.notesLabel">Additional Instructions (Optional)</label>
+            <textarea id="notes" name="notes" class="form-textarea" style="min-height: 80px;" data-i18n-placeholder="step4.notesPlaceholder" placeholder="Any special care instructions or concierge notes..."></textarea>
           </div>
-        </div>
-      </div>
 
-      <!-- ==================== STEP 3: REVIEW & SUBMIT ==================== -->
-      <div class="step-pane" id="stepPane3">
-        <div class="step-heading-group">
-          <div class="step-number-tag">الخطوة 03</div>
-          <h2 class="step-title">المراجعة والإرسال</h2>
-          <p class="step-subtitle">راجعي المعلومات بدقة قبل إرسال الفستان للمراجعة والنشر</p>
         </div>
 
         <!-- Dynamic Summary Card -->
@@ -522,8 +556,8 @@
         <!-- Agreement Checkbox -->
         <div class="agreement-card" id="agreementBox">
           <input type="checkbox" id="agreementCheckbox" class="agreement-checkbox" />
-          <label for="agreementCheckbox" class="agreement-label">
-            أؤكد صحة جميع البيانات الواردة أعلاه، وأوافق على مراجعة الفستان من قبل فريق Once Gown قبل نشره في المنصة.
+          <label for="agreementCheckbox" class="agreement-label" data-i18n="step4.agreement">
+            I confirm all provided details are accurate and authorize Once Gown to review and feature this piece on the platform.
           </label>
         </div>
         <div class="error-message" style="margin-top: 8px;"></div>
@@ -539,29 +573,29 @@
         </svg>
       </div>
 
-      <h2 class="success-title">تم استلام طلبك بنجاح ✨</h2>
-      <p class="success-message">
-        سيقوم فريق Once Gown بمراجعته ثم نشره في أقرب وقت.
+      <h2 class="success-title" data-i18n="success.title">Listing Submitted Successfully</h2>
+      <p class="success-message" data-i18n="success.message">
+        Our concierge team will review your submission and publish your piece on Once Gown shortly.
       </p>
 
       <div style="display: flex; justify-content: center; gap: 16px;">
-        <button type="button" class="btn-luxury btn-primary-gold" id="btnResetForm">إضافة فستان آخر</button>
+        <button type="button" class="btn-luxury btn-primary-gold" id="btnResetForm" data-i18n="success.resetBtn">List Another Gown</button>
       </div>
     </div>
 
   </main>
 
   <!-- Sticky Bottom Navigation Bar -->
-  <div class="sticky-actions-bar" id="stickyActionsBar" role="region" aria-label="شريط التنقل">
+  <div class="sticky-actions-bar hidden" id="stickyActionsBar" role="region" aria-label="Navigation Actions">
     <div class="autosave-indicator">
-      <span style="color: var(--gold-primary);">•</span>
-      <span id="autoSaveText">تم الحفظ</span>
+      <span style="color: var(--rose-deep);">•</span>
+      <span id="autoSaveText" data-i18n="nav.autoSave">Draft Saved</span>
     </div>
 
     <div class="action-buttons-group">
-      <button type="button" class="btn-luxury btn-secondary-outline" id="btnBack">السابق</button>
+      <button type="button" class="btn-luxury btn-secondary-outline" id="btnBack" data-i18n="nav.back">Back</button>
       <button type="button" class="btn-luxury btn-primary-gold" id="btnNext">
-        <span id="btnNextText">المتابعة</span>
+        <span id="btnNextText" data-i18n="nav.continue">Continue</span>
       </button>
     </div>
   </div>
@@ -575,6 +609,7 @@
   <script src="firebase-config.js"></script>
   <script src="image-service.js"></script>
   <script src="firebase-payload.js"></script>
+  <script src="i18n.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

@@ -19,11 +19,16 @@ class ImageService {
    * @returns {Promise<Array>} List of processed image objects
    */
   async processFiles(fileList) {
+    if (!fileList || fileList.length === 0) return this.getImages();
     const files = Array.from(fileList);
-    const validImageTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/heic'];
 
     for (const file of files) {
-      if (!validImageTypes.includes(file.type) && !file.type.startsWith('image/')) {
+      // Robust image check (accepts missing mime types, mobile gallery files, and extension matches)
+      const isImage = (file.type && file.type.startsWith('image/')) ||
+                      (file.name && file.name.match(/\.(jpg|jpeg|png|webp|heic|heif|bmp|gif|jfif|avif)$/i)) ||
+                      (!file.type && !file.name);
+
+      if (!isImage) {
         continue;
       }
 
@@ -33,18 +38,20 @@ class ImageService {
       }
 
       try {
-        const base64 = await this.fileToBase64(file);
-        const imageObj = {
-          id: 'img_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6),
-          file: file,
-          name: file.name,
-          base64: base64,
-          isCover: this.images.length === 0, // First image is cover by default
-          sizeFormatted: this.formatFileSize(file.size)
-        };
-        this.images.push(imageObj);
+        const base64 = await this.compressImage(file, 1200, 0.85);
+        if (base64) {
+          const imageObj = {
+            id: 'img_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6),
+            file: file,
+            name: file.name || `صورة_${this.images.length + 1}.jpg`,
+            base64: base64,
+            isCover: this.images.length === 0, // First image is cover by default
+            sizeFormatted: this.formatFileSize(file.size || 100000)
+          };
+          this.images.push(imageObj);
+        }
       } catch (err) {
-        console.error('Error processing image:', err);
+        console.error('Error compressing image:', err);
       }
     }
 
@@ -53,15 +60,56 @@ class ImageService {
   }
 
   /**
-   * Convert a single File to Base64 String
+   * Compress File object to optimized JPEG Base64 with safe raw fallback
    * @param {File} file 
+   * @param {number} maxWidth Max dimension in px
+   * @param {number} quality JPEG quality (0 to 1)
    * @returns {Promise<string>} Base64 Data URL
    */
-  fileToBase64(file) {
-    return new Promise((resolve, reject) => {
+  compressImage(file, maxWidth = 1200, quality = 0.85) {
+    return new Promise((resolve) => {
       const reader = new FileReader();
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = (error) => reject(error);
+      reader.onload = (e) => {
+        const rawBase64 = e.target.result;
+        if (!rawBase64) {
+          resolve('');
+          return;
+        }
+
+        const img = new Image();
+        img.onload = () => {
+          try {
+            let width = img.width || 800;
+            let height = img.height || 600;
+
+            if (width > maxWidth || height > maxWidth) {
+              if (width > height) {
+                height = Math.round((height * maxWidth) / width);
+                width = maxWidth;
+              } else {
+                width = Math.round((width * maxWidth) / height);
+                height = maxWidth;
+              }
+            }
+
+            const canvas = document.createElement('canvas');
+            canvas.width = width;
+            canvas.height = height;
+
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, width, height);
+
+            const compressedBase64 = canvas.toDataURL('image/jpeg', quality);
+            resolve(compressedBase64 || rawBase64);
+          } catch (err) {
+            console.warn('Canvas compression fallback to raw base64:', err);
+            resolve(rawBase64);
+          }
+        };
+        img.onerror = () => resolve(rawBase64); // Fallback to raw if canvas cannot draw (e.g. HEIC)
+        img.src = rawBase64;
+      };
+      reader.onerror = () => resolve('');
       reader.readAsDataURL(file);
     });
   }

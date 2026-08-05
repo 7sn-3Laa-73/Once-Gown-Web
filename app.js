@@ -1,30 +1,35 @@
 /**
  * Once Gown - Main Application Controller
- * Option 1 (Blurred Storefront Background) + Option 3 (Fixed Top Bar with 20-Day Countdown)
- * Handles 3-step wizard logic, auto-save state, validation,
- * custom color picker, ImageService, and real-time submission.
+ * Handles Role Selection (Seller vs Buyer), 4-step wizard logic, Buyer "Coming Soon" preview,
+ * i18n language switching, auto-save state, validation, custom color picker, ImageService,
+ * and real-time Firestore submission.
  */
 
 document.addEventListener('DOMContentLoaded', () => {
   // Initialize Image Service
   const imageService = new ImageService();
 
-  // State Management (3 Steps)
+  // State Management (Role & 4 Steps)
   const state = {
+    role: null, // 'seller' | 'buyer' | null
     currentStep: 1,
-    totalSteps: 3,
+    totalSteps: 4,
     formData: {},
     images: []
   };
 
-  // Step Titles Configuration
-  const stepTitles = {
-    1: 'البيانات الأساسية وصور الفستان',
-    2: 'تفاصيل اختيارية إضافية',
-    3: 'المراجعة والإرسال'
-  };
+  // DOM Elements - Role Modal & Views
+  const elRoleModalOverlay = document.getElementById('roleModalOverlay');
+  const elBtnSelectSeller = document.getElementById('btnSelectSeller');
+  const elBtnSelectBuyer = document.getElementById('btnSelectBuyer');
+  const elBtnOpenRoleModal = document.getElementById('btnOpenRoleModal');
+  const elBuyerComingSoonView = document.getElementById('buyerComingSoonView');
+  const elSellerProgressCard = document.getElementById('sellerProgressCard');
+  const elWizardCard = document.getElementById('wizardCard');
+  const elStickyActionsBar = document.getElementById('stickyActionsBar');
+  const elHeaderBadgeSeller = document.getElementById('headerBadgeSeller');
 
-  // DOM Elements
+  // DOM Elements - Form & Wizard Navigation
   const elProgressFill = document.getElementById('progressFill');
   const elStepCountDisplay = document.getElementById('stepCountDisplay');
   const elStepTitleDisplay = document.getElementById('stepTitleDisplay');
@@ -41,6 +46,18 @@ document.addEventListener('DOMContentLoaded', () => {
   const customColorPicker = document.getElementById('customColorPicker');
   const customColorText = document.getElementById('customColorText');
 
+  // VIP Subscription Elements
+  const btnSubscribeVip = document.getElementById('btnSubscribeVip');
+  const buyerVipEmail = document.getElementById('buyerVipEmail');
+  const vipSubscribeMsg = document.getElementById('vipSubscribeMsg');
+  const btnSwitchToSellerFromBuyer = document.getElementById('btnSwitchToSellerFromBuyer');
+
+  // Initialize Language & Apply Initial Translations
+  setupLanguageSwitcher();
+
+  // Initialize Role Selector System
+  setupRoleSelector();
+
   // Initialize 20-Day Countdown Timer
   startBarCountdownTimer();
 
@@ -56,6 +73,123 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Initial UI Render
   updateStepUI();
+
+  // -------------------------------------------------------------
+  // Role Selector & View Switching System
+  // -------------------------------------------------------------
+
+  function setupRoleSelector() {
+    // Check if user has saved role choice or show modal by default
+    const savedRole = localStorage.getItem('once_gown_role');
+
+    if (savedRole === 'seller') {
+      setRole('seller', false);
+    } else if (savedRole === 'buyer') {
+      setRole('buyer', false);
+    } else {
+      // Show modal on first visit
+      showRoleModal();
+    }
+
+    if (elBtnSelectSeller) {
+      elBtnSelectSeller.addEventListener('click', () => setRole('seller', true));
+    }
+
+    if (elBtnSelectBuyer) {
+      elBtnSelectBuyer.addEventListener('click', () => setRole('buyer', true));
+    }
+
+    if (elBtnOpenRoleModal) {
+      elBtnOpenRoleModal.addEventListener('click', () => showRoleModal());
+    }
+
+    if (btnSwitchToSellerFromBuyer) {
+      btnSwitchToSellerFromBuyer.addEventListener('click', () => setRole('seller', true));
+    }
+
+    if (btnSubscribeVip) {
+      btnSubscribeVip.addEventListener('click', () => {
+        if (buyerVipEmail && buyerVipEmail.value.includes('@')) {
+          vipSubscribeMsg.classList.remove('hidden');
+          buyerVipEmail.value = '';
+        } else {
+          alert(i18n.lang === 'ar' ? 'يرجى كتابة بريد إلكتروني صحيح' : 'Please enter a valid email address');
+        }
+      });
+    }
+  }
+
+  function showRoleModal() {
+    if (elRoleModalOverlay) {
+      elRoleModalOverlay.classList.remove('hidden');
+    }
+  }
+
+  function hideRoleModal() {
+    if (elRoleModalOverlay) {
+      elRoleModalOverlay.classList.add('hidden');
+    }
+  }
+
+  function setRole(role, persist = true) {
+    state.role = role;
+    if (persist) {
+      localStorage.setItem('once_gown_role', role);
+    }
+
+    hideRoleModal();
+
+    if (role === 'seller') {
+      // Show Seller Listing Form
+      if (elBuyerComingSoonView) elBuyerComingSoonView.classList.add('hidden');
+      if (elSellerProgressCard) elSellerProgressCard.classList.remove('hidden');
+      if (elWizardCard) elWizardCard.classList.remove('hidden');
+      if (elStickyActionsBar) elStickyActionsBar.classList.remove('hidden');
+      if (elHeaderBadgeSeller) elHeaderBadgeSeller.classList.remove('hidden');
+
+      updateStepUI();
+      window.scrollTo({ top: 100, behavior: 'smooth' });
+    } else if (role === 'buyer') {
+      // Show Buyer Coming Soon View
+      if (elSellerProgressCard) elSellerProgressCard.classList.add('hidden');
+      if (elWizardCard) elWizardCard.classList.add('hidden');
+      if (elStickyActionsBar) elStickyActionsBar.classList.add('hidden');
+      if (elHeaderBadgeSeller) elHeaderBadgeSeller.classList.add('hidden');
+      if (elBuyerComingSoonView) elBuyerComingSoonView.classList.remove('hidden');
+
+      window.scrollTo({ top: 100, behavior: 'smooth' });
+    }
+  }
+
+  // -------------------------------------------------------------
+  // Language Switcher Setup
+  // -------------------------------------------------------------
+
+  function setupLanguageSwitcher() {
+    const langBtns = [
+      document.getElementById('langSwitchBtn'),
+      document.getElementById('modalLangSwitchBtn')
+    ];
+
+    langBtns.forEach(btn => {
+      if (!btn) return;
+      btn.addEventListener('click', (e) => {
+        const option = e.target.closest('[data-lang]');
+        const targetLang = option ? option.getAttribute('data-lang') : (i18n.lang === 'en' ? 'ar' : 'en');
+        i18n.setLanguage(targetLang);
+      });
+    });
+
+    // Apply saved or default language (English default)
+    i18n.setLanguage(i18n.lang);
+
+    window.addEventListener('languageChanged', () => {
+      updateStepUI();
+      if (state.currentStep === state.totalSteps && state.role === 'seller') {
+        renderReviewSummary();
+      }
+    });
+  }
 
   // -------------------------------------------------------------
   // Live 20-Day Countdown Timer in Fixed Top Announcement Bar
@@ -109,12 +243,12 @@ document.addEventListener('DOMContentLoaded', () => {
     customColorPicker.addEventListener('input', (e) => {
       const selectedHex = e.target.value;
       if (customColorText) {
-        customColorText.textContent = `لون مخصص (${selectedHex})`;
+        customColorText.textContent = `${i18n.t('step2.colorCustomLabel')} ${selectedHex}`;
       }
       document.querySelectorAll('[name="color"]').forEach(radio => {
         radio.checked = false;
       });
-      state.formData.color = `لون مخصص (${selectedHex})`;
+      state.formData.color = `${selectedHex}`;
       saveLocalDraft();
     });
 
@@ -167,21 +301,22 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const progressPercent = (state.currentStep / state.totalSteps) * 100;
-    elProgressFill.style.width = `${progressPercent}%`;
-    elStepCountDisplay.textContent = `الخطوة ${state.currentStep} من ${state.totalSteps}`;
-    elStepTitleDisplay.textContent = stepTitles[state.currentStep] || '';
+    if (elProgressFill) elProgressFill.style.width = `${progressPercent}%`;
+
+    if (elStepCountDisplay) elStepCountDisplay.textContent = `${i18n.t('progress.stepPrefix')} ${state.currentStep} ${i18n.t('progress.stepOf')}`;
+    if (elStepTitleDisplay) elStepTitleDisplay.textContent = i18n.t(`step${state.currentStep}.progressTitle`);
 
     if (state.currentStep === 1) {
-      elBtnBack.style.visibility = 'hidden';
+      if (elBtnBack) elBtnBack.style.visibility = 'hidden';
     } else {
-      elBtnBack.style.visibility = 'visible';
+      if (elBtnBack) elBtnBack.style.visibility = 'visible';
     }
 
     if (state.currentStep === state.totalSteps) {
-      elBtnNextText.textContent = 'إرسال طلب الفستان ✨';
+      if (elBtnNextText) elBtnNextText.textContent = i18n.t('nav.submit');
       renderReviewSummary();
     } else {
-      elBtnNextText.textContent = 'المتابعة';
+      if (elBtnNextText) elBtnNextText.textContent = i18n.t('nav.continue');
     }
   }
 
@@ -194,51 +329,64 @@ document.addEventListener('DOMContentLoaded', () => {
     let isValid = true;
     collectFormData();
 
+    // Step 1 Validation: Photos
     if (state.currentStep === 1) {
       if (imageService.getImages().length < 1) {
-        showError('imageUploadArea', 'الرجاء رفع صورة واحدة على الأقل للفستان');
+        showError('imageUploadArea', i18n.t('error.photoRequired'));
         isValid = false;
       }
-      if (!state.formData.ownerName) {
-        showError('ownerName', 'الرجاء إدخال الاسم بالكامل');
-        isValid = false;
-      }
-      if (!state.formData.phone || !/^(01)[0-9]{9}$/.test(state.formData.phone)) {
-        showError('phone', 'الرجاء إدخال رقم واتساب مصري صحيح (مثال: 01012345678)');
-        isValid = false;
-      }
-      if (!state.formData.governorate) {
-        showError('governorate', 'الرجاء اختيار المحافظة');
-        isValid = false;
-      }
-      if (!state.formData.city) {
-        showError('city', 'الرجاء إدخال المدينة');
-        isValid = false;
-      }
-      if (!state.formData.address) {
-        showError('address', 'الرجاء إدخال العنوان بالتفصيل');
-        isValid = false;
-      }
-      if (!state.formData.dressCategory) {
-        showError('dressCategory', 'الرجاء اختيار المناسبة');
-        isValid = false;
-      }
+    }
+
+    // Step 2 Validation: Color & Price Specs
+    if (state.currentStep === 2) {
       if (!state.formData.color) {
-        showError('color', 'الرجاء اختيار لون الفستان أو توضيحه');
+        showError('colorGroup', i18n.t('error.colorRequired'));
         isValid = false;
       }
-      if (state.formData.listingType.includes('إيجار')) {
-        if (!state.formData.rentPrice || state.formData.rentPrice <= 0) {
-          showError('rentPrice', 'الرجاء تحديد سعر الإيجار (بالجنيه)');
+      const listingType = state.formData.listingType || 'للإيجار والبيع';
+      if (listingType.includes('إيجار') || listingType.includes('Rent')) {
+        if (!state.formData.rentPrice || Number(state.formData.rentPrice) <= 0) {
+          showError('rentPriceGroup', i18n.t('error.rentPriceRequired'));
+          isValid = false;
+        }
+      }
+      if (listingType === 'للبيع' || listingType === 'Sale Only') {
+        if (!state.formData.sellPrice || Number(state.formData.sellPrice) <= 0) {
+          showError('sellPriceGroup', i18n.t('error.sellPriceRequired'));
           isValid = false;
         }
       }
     }
 
+    // Step 3 Validation: Owner Info & Location
     if (state.currentStep === 3) {
+      if (!state.formData.ownerName) {
+        showError('ownerNameGroup', i18n.t('error.ownerNameRequired'));
+        isValid = false;
+      }
+      if (!state.formData.phone || !/^(01)[0-9]{9}$/.test(state.formData.phone)) {
+        showError('phoneGroup', i18n.t('error.phoneRequired'));
+        isValid = false;
+      }
+      if (!state.formData.governorate) {
+        showError('governorateGroup', i18n.t('error.governorateRequired'));
+        isValid = false;
+      }
+      if (!state.formData.city) {
+        showError('cityGroup', i18n.t('error.cityRequired'));
+        isValid = false;
+      }
+      if (!state.formData.address) {
+        showError('addressGroup', i18n.t('error.addressRequired'));
+        isValid = false;
+      }
+    }
+
+    // Step 4 Validation: Agreement
+    if (state.currentStep === 4) {
       const cbAgree = document.getElementById('agreementCheckbox');
-      if (!cbAgree.checked) {
-        showError('agreementBox', 'يجب الموافقة على صحة البيانات ومراجعة الفستان قبل الإرسال');
+      if (!cbAgree || !cbAgree.checked) {
+        showError('agreementBox', i18n.t('error.agreementRequired'));
         isValid = false;
       }
     }
@@ -276,18 +424,7 @@ document.addEventListener('DOMContentLoaded', () => {
           state.formData[input.name] = input.value;
         }
       } else if (input.type === 'checkbox') {
-        if (input.name === 'accessories') {
-          if (!Array.isArray(state.formData.accessories)) {
-            state.formData.accessories = [];
-          }
-          if (input.checked && !state.formData.accessories.includes(input.value)) {
-            state.formData.accessories.push(input.value);
-          } else if (!input.checked) {
-            state.formData.accessories = state.formData.accessories.filter(v => v !== input.value);
-          }
-        } else {
-          state.formData[input.name] = input.checked;
-        }
+        state.formData[input.name] = input.checked;
       } else {
         state.formData[input.name] = input.value;
       }
@@ -315,7 +452,7 @@ document.addEventListener('DOMContentLoaded', () => {
         imagesBase64: imageService.getBase64Payload()
       };
       localStorage.setItem('once_gown_draft', JSON.stringify(draft));
-      elAutoSaveText.textContent = 'تم الحفظ تلقائياً ✨';
+      if (elAutoSaveText) elAutoSaveText.textContent = i18n.t('nav.autoSave');
     } catch (e) {
       console.warn('Draft cache limit:', e);
     }
@@ -348,11 +485,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (el.type === 'radio') {
           el.checked = (el.value === value);
         } else if (el.type === 'checkbox') {
-          if (Array.isArray(value)) {
-            el.checked = value.includes(el.value);
-          } else {
-            el.checked = Boolean(value);
-          }
+          el.checked = Boolean(value);
         } else {
           el.value = value;
         }
@@ -365,7 +498,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const groupTailor = document.getElementById('tailorNameGroup');
     radioReady.forEach(radio => {
       radio.addEventListener('change', (e) => {
-        if (e.target.value === 'تفصيل') {
+        if (e.target.value === 'تفصيل' || e.target.value === 'Bespoke / Tailored') {
           groupTailor.classList.remove('hidden');
         } else {
           groupTailor.classList.add('hidden');
@@ -377,7 +510,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const groupDefects = document.getElementById('defectDetailsGroup');
     radioDefects.forEach(radio => {
       radio.addEventListener('change', (e) => {
-        if (e.target.value === 'نعم') {
+        if (e.target.value === 'نعم' || e.target.value === 'Minor Notes Present') {
           groupDefects.classList.remove('hidden');
         } else {
           groupDefects.classList.add('hidden');
@@ -389,7 +522,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const groupAlterations = document.getElementById('alterationDetailsGroup');
     radioAlterations.forEach(radio => {
       radio.addEventListener('change', (e) => {
-        if (e.target.value === 'نعم') {
+        if (e.target.value === 'نعم' || e.target.value === 'Yes') {
           groupAlterations.classList.remove('hidden');
         } else {
           groupAlterations.classList.add('hidden');
@@ -403,10 +536,10 @@ document.addEventListener('DOMContentLoaded', () => {
     radioListing.forEach(radio => {
       radio.addEventListener('change', (e) => {
         const type = e.target.value;
-        if (type === 'للإيجار') {
+        if (type === 'للإيجار' || type === 'Rent Only') {
           groupRentPrice.classList.remove('hidden');
           groupSellPrice.classList.add('hidden');
-        } else if (type === 'للبيع') {
+        } else if (type === 'للبيع' || type === 'Sale Only') {
           groupRentPrice.classList.add('hidden');
           groupSellPrice.classList.remove('hidden');
         } else {
@@ -418,7 +551,12 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function setupImageServiceEvents() {
-    elDropzone.addEventListener('click', () => elFileInput.click());
+    if (!elDropzone || !elFileInput) return;
+
+    elDropzone.addEventListener('click', (e) => {
+      e.stopPropagation();
+      elFileInput.click();
+    });
 
     elDropzone.addEventListener('dragover', (e) => {
       e.preventDefault();
@@ -432,7 +570,7 @@ document.addEventListener('DOMContentLoaded', () => {
     elDropzone.addEventListener('drop', async (e) => {
       e.preventDefault();
       elDropzone.classList.remove('dragover');
-      if (e.dataTransfer.files.length > 0) {
+      if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length > 0) {
         await imageService.processFiles(e.dataTransfer.files);
         renderImagePreviews();
         saveLocalDraft();
@@ -440,28 +578,37 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     elFileInput.addEventListener('change', async () => {
-      if (elFileInput.files.length > 0) {
+      if (elFileInput.files && elFileInput.files.length > 0) {
         await imageService.processFiles(elFileInput.files);
         renderImagePreviews();
         saveLocalDraft();
+        elFileInput.value = ''; // Clear value so selecting same file works again
       }
     });
   }
 
   function renderImagePreviews() {
     const images = imageService.getImages();
+    if (!elPreviewGrid) return;
     elPreviewGrid.innerHTML = '';
+
+    const area = document.getElementById('imageUploadArea');
+    if (images.length > 0 && area) {
+      area.classList.remove('has-error');
+      const errEl = area.querySelector('.error-message');
+      if (errEl) errEl.textContent = '';
+    }
 
     images.forEach((img) => {
       const card = document.createElement('div');
       card.className = 'image-preview-card';
 
       card.innerHTML = `
-        <img src="${img.base64}" class="image-preview-img" alt="صورة الفستان" />
-        ${img.isCover ? '<span class="cover-badge">الصورة الرئيسية</span>' : ''}
+        <img src="${img.base64}" class="image-preview-img" alt="Gown Image" />
+        ${img.isCover ? `<span class="cover-badge">${i18n.t('preview.coverBadge')}</span>` : ''}
         <div class="image-actions-overlay">
-          ${!img.isCover ? `<button type="button" class="action-btn-sm btn-set-cover" data-id="${img.id}">تعيين كغلاف</button>` : ''}
-          <button type="button" class="action-btn-sm action-btn-danger btn-remove-img" data-id="${img.id}">حذف</button>
+          ${!img.isCover ? `<button type="button" class="action-btn-sm btn-set-cover" data-id="${img.id}">${i18n.t('preview.setCover')}</button>` : ''}
+          <button type="button" class="action-btn-sm action-btn-danger btn-remove-img" data-id="${img.id}">${i18n.t('preview.remove')}</button>
         </div>
       `;
 
@@ -491,30 +638,31 @@ document.addEventListener('DOMContentLoaded', () => {
     collectFormData();
     const d = state.formData;
     const images = imageService.getImages();
+    const curr = i18n.t('review.currency');
+    if (!elReviewSummary) return;
 
     elReviewSummary.innerHTML = `
       <div class="review-summary-card">
         <div class="review-section">
-          <div class="review-section-title">بيانات المالكة والتواصل</div>
-          <div class="review-row"><span class="review-label">الاسم:</span><span class="review-value">${d.ownerName || '-'}</span></div>
-          <div class="review-row"><span class="review-label">واتساب:</span><span class="review-value">${d.phone || '-'}</span></div>
-          <div class="review-row"><span class="review-label">العنوان:</span><span class="review-value">${d.governorate || ''}، ${d.city || ''}، ${d.address || '-'}</span></div>
+          <div class="review-section-title">${i18n.t('review.ownerTitle')}</div>
+          <div class="review-row"><span class="review-label">${i18n.t('review.ownerName')}</span><span class="review-value">${d.ownerName || '-'}</span></div>
+          <div class="review-row"><span class="review-label">${i18n.t('review.phone')}</span><span class="review-value">${d.phone || '-'}</span></div>
+          <div class="review-row"><span class="review-label">${i18n.t('review.address')}</span><span class="review-value">${d.governorate || ''}${d.city ? ', ' + d.city : ''}${d.address ? ', ' + d.address : '-'}</span></div>
         </div>
 
         <div class="review-section">
-          <div class="review-section-title">مواصفات الفستان والأسعار</div>
-          <div class="review-row"><span class="review-label">المناسبة والماركة:</span><span class="review-value">${d.dressCategory || ''} (${d.brand || 'غير محدد'})</span></div>
-          <div class="review-row"><span class="review-label">اللون:</span><span class="review-value">${d.color || '-'}</span></div>
-          <div class="review-row"><span class="review-label">المقاس:</span><span class="review-value">${d.size || 'غير محدد'}</span></div>
-          ${d.rentPrice ? `<div class="review-row"><span class="review-label">سعر الإيجار:</span><span class="review-value">${d.rentPrice} ج.م (${d.rentDuration || '3 أيام'})</span></div>` : ''}
-          ${d.sellPrice ? `<div class="review-row"><span class="review-label">سعر البيع:</span><span class="review-value">${d.sellPrice} ج.م</span></div>` : ''}
-          <div class="review-row"><span class="review-label">عدد الصور المرفقة:</span><span class="review-value">${images.length} صور</span></div>
+          <div class="review-section-title">${i18n.t('review.specsTitle')}</div>
+          <div class="review-row"><span class="review-label">${i18n.t('review.brand')}</span><span class="review-value">${d.brand || i18n.t('review.notSpecified')}</span></div>
+          <div class="review-row"><span class="review-label">${i18n.t('review.color')}</span><span class="review-value">${d.color || '-'}</span></div>
+          <div class="review-row"><span class="review-label">${i18n.t('review.size')}</span><span class="review-value">${d.size || i18n.t('review.notSpecified')}</span></div>
+          ${d.rentPrice ? `<div class="review-row"><span class="review-label">${i18n.t('review.rentPrice')}</span><span class="review-value">${d.rentPrice} ${curr}</span></div>` : ''}
+          ${d.sellPrice ? `<div class="review-row"><span class="review-label">${i18n.t('review.sellPrice')}</span><span class="review-value">${d.sellPrice} ${curr}</span></div>` : ''}
+          <div class="review-row"><span class="review-label">${i18n.t('review.imageCount')}</span><span class="review-value">${images.length} ${i18n.t('review.photosCount')}</span></div>
         </div>
 
         <div class="review-section">
-          <div class="review-section-title">ملاحظات وملحقات الفستان</div>
-          <div class="review-row"><span class="review-label">الملحقات:</span><span class="review-value">${(d.accessories && d.accessories.length > 0) ? d.accessories.join('، ') : 'بدون ملحقات إضافية'}</span></div>
-          <div class="review-row"><span class="review-label">الملاحظات:</span><span class="review-value">${d.notes || 'لا يوجد'}</span></div>
+          <div class="review-section-title">${i18n.t('review.notesTitle')}</div>
+          <div class="review-row"><span class="review-label">${i18n.t('review.notes')}</span><span class="review-value">${d.notes || i18n.t('review.none')}</span></div>
         </div>
       </div>
     `;
@@ -525,17 +673,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const payload = FirebasePayloadBuilder.buildPayload(state.formData, imageService.getBase64Payload());
 
     elBtnNext.disabled = true;
-    elBtnNextText.textContent = 'جاري حفظ الطلب... ✨';
+    elBtnNextText.textContent = i18n.t('nav.saving');
 
     try {
       await saveDressToFirestore(payload);
 
-      document.querySelector('.progress-card').classList.add('hidden');
-      document.querySelector('.wizard-card').classList.add('hidden');
-      document.querySelector('.sticky-actions-bar').classList.add('hidden');
+      if (elSellerProgressCard) elSellerProgressCard.classList.add('hidden');
+      if (elWizardCard) elWizardCard.classList.add('hidden');
+      if (elStickyActionsBar) elStickyActionsBar.classList.add('hidden');
 
       const successView = document.getElementById('successView');
-      successView.classList.remove('hidden');
+      if (successView) successView.classList.remove('hidden');
 
       const btnReset = document.getElementById('btnResetForm');
       if (btnReset) {
@@ -545,9 +693,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       }
     } catch (err) {
-      alert('حدث خطأ أثناء إرسال الفستان، يرجى المحاولة مرة أخرى: ' + (err.message || ''));
+      alert('Error submitting listing, please try again: ' + (err.message || ''));
       elBtnNext.disabled = false;
-      elBtnNextText.textContent = 'إرسال طلب الفستان ✨';
+      elBtnNextText.textContent = i18n.t('nav.submit');
     }
   }
 });
