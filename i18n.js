@@ -48,15 +48,15 @@ const translations = {
     "progress.stepOf": "of 4",
 
     // Step Titles for Progress Header
-    "step1.progressTitle": "Imagery & Listing Preference",
+    "step1.progressTitle": "Upload High-Quality Photos",
     "step2.progressTitle": "Specifications & Valuation",
     "step3.progressTitle": "Client Identity & Location",
     "step4.progressTitle": "Final Review & Authorization",
 
     // Step 1 Pane
     "step1.tag": "STEP 01",
-    "step1.title": "Showcase Your Gown",
-    "step1.subtitle": "Upload high-resolution photography to highlight the beauty and craftsmanship of your piece",
+    "step1.title": "Upload High-Quality Photos",
+    "step1.subtitle": "",
     "step1.uploadLabel": "Gown Photography (Cover photo first)",
     "step1.uploadRequired": "*",
     "step1.uploadTitle": "Drag photography here or click to browse",
@@ -72,7 +72,7 @@ const translations = {
     // Step 2 Pane
     "step2.tag": "STEP 02",
     "step2.title": "Specifications & Valuation",
-    "step2.subtitle": "Define color palette, sizing, designer atelier, and desired pricing",
+    "step2.subtitle": "",
     "step2.colorLabel": "Primary Color Palette",
     "step2.colorCustomLabel": "Or select custom color:",
 
@@ -114,7 +114,7 @@ const translations = {
     // Step 3 Pane
     "step3.tag": "STEP 03",
     "step3.title": "Client Identity & Location",
-    "step3.subtitle": "Your contact details are stored securely for private concierge coordination",
+    "step3.subtitle": "",
     "step3.ownerNameLabel": "Full Name",
     "step3.ownerNamePlaceholder": "e.g. Yasmine Ahmed Mahmoud",
     "step3.phoneLabel": "WhatsApp Number",
@@ -133,7 +133,7 @@ const translations = {
     // Step 4 Pane
     "step4.tag": "STEP 04",
     "step4.title": "Review & Authorization",
-    "step4.subtitle": "Verify your gown specifications and privacy terms before final submission",
+    "step4.subtitle": "",
     "step4.conditionLabel": "Garment Condition",
     "step4.conditionNew": "New (With Tags)",
     "step4.conditionWornOnce": "Worn Once",
@@ -188,10 +188,26 @@ const translations = {
     "preview.setCover": "Set Cover",
     "preview.remove": "Remove",
 
-    // Success Screen
+    // Success Screen & Tracking Link
     "success.title": "Listing Submitted Successfully",
     "success.message": "Our concierge team will review your submission and publish your piece on Once Gown shortly.",
     "success.resetBtn": "List Another Gown",
+    "track.linkTitle": "Your Private Tracking Link",
+    "track.linkDesc": "Keep or copy this unique link to check your gown's review status anytime:",
+    "track.copyBtn": "Copy Tracking Link 📋",
+    "track.copiedMsg": "Link Copied to Clipboard! ✨",
+    "track.shareWaBtn": "Save to WhatsApp 📱",
+    "track.viewNowBtn": "View Live Status Now 🌐",
+    "track.modalTitle": "Gown Listing Status",
+    "track.statusPending": "Pending Review ⏳",
+    "track.pendingDesc": "Our concierge team is reviewing your gown details. Status will update live here.",
+    "track.statusApproved": "Approved & Published ✨",
+    "track.approvedDesc": "Congratulations! Your gown has been accepted and is live in the boutique collection.",
+    "track.statusRejected": "Submission Not Approved ❌",
+    "track.rejectedDesc": "Regrettably, your submission was not approved.",
+    "track.rejectionReasonTitle": "Reason Provided by Concierge:",
+    "track.myListingsBtn": "My Listed Gowns 👗",
+    "header.trackBtn": "Track Status",
 
     // Validation Errors
     "error.photoRequired": "Please upload at least one photo of your gown",
@@ -250,15 +266,15 @@ const translations = {
     "progress.stepOf": "من 4",
 
     // Step Titles for Progress Header
-    "step1.progressTitle": "صور الفستان ونوع العرض",
+    "step1.progressTitle": "ارفعي صور عالية الجودة",
     "step2.progressTitle": "المواصفات والأسعار",
     "step3.progressTitle": "بيانات المالكة والتواصل",
     "step4.progressTitle": "التفاصيل والمراجعة النهائية",
 
     // Step 1 Pane
     "step1.tag": "الخطوة 01",
-    "step1.title": "صور الفستان ونوع العرض",
-    "step1.subtitle": "ارفعي صوراً عالية الجودة تبرز جمال فستانكِ ورُقي تفاصيله",
+    "step1.title": "ارفعي صور عالية الجودة",
+    "step1.subtitle": "",
     "step1.uploadLabel": "صور الفستان (الصورة الأولى هي الغلاف)",
     "step1.uploadRequired": "*",
     "step1.uploadTitle": "اسحبي صور الفستان هنا أو اضغطي للاختيار",
@@ -274,7 +290,7 @@ const translations = {
     // Step 2 Pane
     "step2.tag": "الخطوة 02",
     "step2.title": "المواصفات والأسعار",
-    "step2.subtitle": "حددي لون الفستان، مقاساته، وسعر الإيجار أو البيع المطلوبة",
+    "step2.subtitle": "",
     "step2.colorLabel": "لون الفستان الرئيسي",
     "step2.colorCustomLabel": "أو اختاري لون مخصص:",
 
@@ -316,7 +332,7 @@ const translations = {
     // Step 3 Pane
     "step3.tag": "الخطوة 03",
     "step3.title": "بيانات المالكة والتواصل",
-    "step3.subtitle": "معلومات التواصل تُحفظ بأمان تام للتنسيق والتسليم بسهولة",
+    "step3.subtitle": "",
     "step3.ownerNameLabel": "الاسم بالكامل",
     "step3.ownerNamePlaceholder": "مثال: ياسمين أحمد محمود",
     "step3.phoneLabel": "رقم الواتساب",
@@ -335,7 +351,7 @@ const translations = {
     // Step 4 Pane
     "step4.tag": "الخطوة 04",
     "step4.title": "التفاصيل والمراجعة النهائية",
-    "step4.subtitle": "راجعي بيانات فستانك بدقة قبل تأكيد الإرسال",
+    "step4.subtitle": "",
     "step4.conditionLabel": "حالة الفستان",
     "step4.conditionNew": "جديد بالتكت",
     "step4.conditionWornOnce": "لبس مرة واحدة",
@@ -346,22 +362,39 @@ const translations = {
     "step4.defectsNo": "لا، بحالة ممتازة",
     "step4.defectsYes": "نعم، يوجد ملاحظات",
     "step4.defectDetailsLabel": "توضيح العيوب",
-    "step4.defectDetailsPlaceholder": "مثال: بقعة بسيطة غير ملحوظة أسفل الفستان...",
+    "step4.defectDetailsPlaceholder": "مثال: بقعة     // Success Screen & Tracking Link
+    "success.title": "تم استلام طلبك بنجاح",
+    "success.message": "سيقوم فريق Once Gown بمراجعة الطلب ونشر فستانكِ في أقرب وقت.",
+    "success.resetBtn": "إضافة فستان آخر",
+    "track.linkTitle": "رابط متابعة حالة الفستان الخاص بكِ",
+    "track.linkDesc": "احفظي هذا الرابط أو انسخيه لمتابعة حالة مراجعة فستانكِ وقبوله في أي وقت:",
+    "track.copyBtn": "نسخ رابط متابعة طلبكِ 📋",
+    "track.copiedMsg": "تم نسخ الرابط بنجاح! ✨",
+    "track.shareWaBtn": "حفظ الرابط في الواتساب 📱",
+    "track.viewNowBtn": "معاينة حالة الطلب الآن 🌐",
+    "track.modalTitle": "حالة طلب الفستان",
+    "track.statusPending": "قيد المراجعة ⏳",
+    "track.pendingDesc": "يقوم فريق Once Gown حالياً بمراجعة تفاصيل فستانكِ، وتتحدث الحالة هنا تلقائياً.",
+    "track.statusApproved": "تم القبول والنشر ✨",
+    "track.approvedDesc": "تهانينا! تم قبول فستانكِ وهو معروض حالياً بنجاح داخل تشكيلة البوتيك.",
+    "track.statusRejected": "لم يتم القبول ❌",
+    "track.rejectedDesc": "نعتذر، لم يتم قبول هذا الطلب في الوقت الحالي.",
+    "track.rejectionReasonTitle": "سبب عدم القبول الموضح من الإدارة:",
+    "track.myListingsBtn": "متابعة فساتيني 👗",
+    "header.trackBtn": "متابعة فستاني",
 
-    "step4.alterationsLabel": "هل تسمحين بتعديل مقاس بسيط للعميلة؟",
-    "step4.alterationsYes": "نعم",
-    "step4.alterationsNo": "لا",
-    "step4.alterationDetailsLabel": "التعديلات المسموح بها",
-    "step4.alterationDetailsPlaceholder": "مثال: سراجة مؤقتة، تقصير ذيل بسيط...",
-
-    "step4.notesLabel": "ملاحظات إضافية (اختياري)",
-    "step4.notesPlaceholder": "أي تفاصيل أو تعليمات خاصة تريدين إضافتها...",
-
-    "step4.agreement": "أؤكد صحة كافة البيانات المذكورة، وأوافق على مراجعة الفستان ونشره عبر منصة Once Gown.",
-
-    // Review Summary Card Labels
-    "review.ownerTitle": "بيانات المالكة والتواصل",
-    "review.ownerName": "الاسم:",
+    // Validation Errors
+    "error.photoRequired": "الرجاء رفع صورة واحدة على الأقل للفستان",
+    "error.colorRequired": "الرجاء اختيار لون الفستان الرئيسي أو توضيحه",
+    "error.rentPriceRequired": "الرجاء تحديد سعر الإيجار (بالجنيه)",
+    "error.sellPriceRequired": "الرجاء تحديد سعر البيع (بالجنيه)",
+    "error.ownerNameRequired": "الرجاء إدخال الاسم بالكامل",
+    "error.phoneRequired": "الرجاء إدخال رقم واتساب مصري صحيح (مثال: 01012345678)",
+    "error.governorateRequired": "الرجاء اختيار المحافظة",
+    "error.cityRequired": "الرجاء إدخال المدينة / المنطقة",
+    "error.addressRequired": "الرجاء إدخال العنوان بالتفصيل",
+    "error.agreementRequired": "يجب الموافقة على صحة البيانات ونشر الفستان قبل الإرسال"
+  },�م:",
     "review.phone": "واتساب:",
     "review.address": "العنوان:",
     "review.specsTitle": "مواصفات الفستان والأسعار",

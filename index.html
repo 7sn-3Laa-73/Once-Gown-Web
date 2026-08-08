@@ -65,21 +65,7 @@
     </div>
   </div>
 
-  <!-- Fixed Luxury Announcement Bar with Live Countdown -->
-  <div class="top-announcement-bar">
-    <span class="top-announcement-pulse"></span>
-    <span data-i18n="bar.openingSoon">Official Boutique Launching Soon</span>:
-    
-    <div class="bar-countdown-group">
-      <span class="bar-cd-item"><strong id="barDays">20</strong> <span data-i18n="bar.countdownDays">days</span></span>
-      <span class="bar-cd-item"><strong id="barHours">00</strong> <span data-i18n="bar.countdownHours">hrs</span></span>
-      <span class="bar-cd-item"><strong id="barMinutes">00</strong> <span data-i18n="bar.countdownMinutes">mins</span></span>
-      <span class="bar-cd-item"><strong id="barSeconds">00</strong> <span data-i18n="bar.countdownSeconds">secs</span></span>
-    </div>
 
-    <span class="bar-divider">|</span>
-    <span data-i18n="bar.cta">List your gown early for priority feature</span>
-  </div>
 
   <!-- Sticky Luxury Header -->
   <header class="luxury-header" role="banner">
@@ -104,6 +90,11 @@
       <!-- Experience Switcher Button -->
       <button type="button" class="role-switch-btn" id="btnOpenRoleModal">
         <span data-i18n="header.switchRole">Change Experience</span>
+      </button>
+
+      <!-- Track Gown Status Button -->
+      <button type="button" class="role-switch-btn hidden" id="btnOpenTrackingModal" style="background: rgba(197, 155, 39, 0.12); border-color: rgba(197, 155, 39, 0.4); color: var(--gold-dark);">
+        <span data-i18n="header.trackBtn">Track Status</span>
       </button>
 
       <div class="header-badge hidden" id="headerBadgeSeller">
@@ -176,8 +167,7 @@
       <div class="step-pane active" id="stepPane1">
         <div class="step-heading-group">
           <div class="step-number-tag" data-i18n="step1.tag">STEP 01</div>
-          <h1 class="step-title" data-i18n="step1.title">Showcase Your Gown</h1>
-          <p class="step-subtitle" data-i18n="step1.subtitle">Upload high-resolution photography to highlight the beauty and craftsmanship of your piece</p>
+          <h1 class="step-title" data-i18n="step1.title">Upload High-Quality Photos</h1>
         </div>
 
         <div class="form-grid">
@@ -237,7 +227,6 @@
         <div class="step-heading-group">
           <div class="step-number-tag" data-i18n="step2.tag">STEP 02</div>
           <h2 class="step-title" data-i18n="step2.title">Specifications & Valuation</h2>
-          <p class="step-subtitle" data-i18n="step2.subtitle">Define color palette, sizing, designer atelier, and desired pricing</p>
         </div>
 
         <div class="form-grid">
@@ -395,7 +384,6 @@
         <div class="step-heading-group">
           <div class="step-number-tag" data-i18n="step3.tag">STEP 03</div>
           <h2 class="step-title" data-i18n="step3.title">Client Identity & Location</h2>
-          <p class="step-subtitle" data-i18n="step3.subtitle">Your contact details are stored securely for private concierge coordination</p>
         </div>
 
         <div class="form-grid">
@@ -477,7 +465,6 @@
         <div class="step-heading-group">
           <div class="step-number-tag" data-i18n="step4.tag">STEP 04</div>
           <h2 class="step-title" data-i18n="step4.title">Review & Authorization</h2>
-          <p class="step-subtitle" data-i18n="step4.subtitle">Verify your gown specifications and privacy terms before final submission</p>
         </div>
 
         <div class="form-grid" style="margin-bottom: 24px;">
@@ -581,12 +568,42 @@
         Our concierge team will review your submission and publish your piece on Once Gown shortly.
       </p>
 
+      <!-- Private Tracking Link Box -->
+      <div id="trackingLinkBox" class="tracking-link-box hidden" style="background: rgba(255, 255, 255, 0.85); border: 1px solid var(--border-color); padding: 20px; border-radius: 16px; margin: 20px 0; text-align: center;">
+        <h3 style="font-size: 1.05rem; font-weight: 700; color: var(--rose-deep); margin-bottom: 6px;" data-i18n="track.linkTitle">Your Private Tracking Link</h3>
+        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 14px;" data-i18n="track.linkDesc">Keep or copy this unique link to check your gown's review status anytime:</p>
+        
+        <div style="display: flex; gap: 8px; max-width: 480px; margin: 0 auto 14px auto;">
+          <input type="text" id="trackingUrlInput" class="form-input" readonly style="font-size: 0.82rem; direction: ltr; text-align: center; background: #FFF;" />
+          <button type="button" class="btn-luxury btn-secondary-outline" id="btnCopyTrackingUrl" style="padding: 8px 14px; font-size: 0.82rem; white-space: nowrap;" data-i18n="track.copyBtn">Copy 📋</button>
+        </div>
+        <div id="trackingCopyToast" class="hidden" style="color: var(--status-approved); font-size: 0.82rem; font-weight: 600; margin-bottom: 14px;" data-i18n="track.copiedMsg">Link Copied! ✨</div>
+
+        <div style="display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;">
+          <button type="button" class="btn-luxury btn-secondary-outline" id="btnShareTrackingWa" style="padding: 8px 16px; font-size: 0.82rem; color: #25D366; border-color: rgba(37, 211, 102, 0.4);" data-i18n="track.shareWaBtn">Save to WhatsApp 📱</button>
+          <button type="button" class="btn-luxury btn-primary-gold" id="btnViewTrackingLive" style="padding: 8px 16px; font-size: 0.82rem;" data-i18n="track.viewNowBtn">View Live Status 🌐</button>
+        </div>
+      </div>
+
       <div style="display: flex; justify-content: center; gap: 16px;">
         <button type="button" class="btn-luxury btn-primary-gold" id="btnResetForm" data-i18n="success.resetBtn">List Another Gown</button>
       </div>
     </div>
 
   </main>
+
+  <!-- Live Gown Tracking Modal -->
+  <div class="role-modal-overlay hidden" id="trackingModalOverlay" role="dialog" aria-modal="true">
+    <div class="role-modal-card" style="max-width: 600px; text-align: start; position: relative;">
+      <button type="button" class="modal-close-btn" id="btnCloseTrackingModal" style="position: absolute; top: 16px; left: 16px;">✕</button>
+      
+      <h2 class="role-modal-title" style="font-size: 1.4rem; margin-bottom: 16px; color: var(--rose-deep);" data-i18n="track.modalTitle">Gown Listing Status</h2>
+
+      <div id="trackingModalBody">
+        <!-- Dynamically rendered live status card -->
+      </div>
+    </div>
+  </div>
 
   <!-- Sticky Bottom Navigation Bar -->
   <div class="sticky-actions-bar hidden" id="stickyActionsBar" role="region" aria-label="Navigation Actions">

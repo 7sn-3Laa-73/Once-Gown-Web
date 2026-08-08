@@ -89,8 +89,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 54px;
-  /* Space for fixed top bar */
+  padding-top: 16px;
   padding-bottom: 120px;
   /* Space for floating bottom bar */
 }
@@ -183,14 +182,8 @@ h4,
 }
 
 @media (max-width: 768px) {
-  .top-announcement-bar {
-    padding: 6px 12px;
-    font-size: 0.78rem;
-    flex-wrap: wrap;
-  }
-
   body {
-    padding-top: 76px;
+    padding-top: 12px;
   }
 }
 
@@ -1950,4 +1943,51 @@ html[dir="ltr"] .role-card {
     padding: 8px 10px;
     font-size: 0.8rem;
   }
+}
+
+.step-subtitle:empty {
+  display: none !important;
+}
+
+/* Live Tracking Modal & Status Cards */
+.tracking-card-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.tracking-status-banner {
+  padding: 16px 20px;
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.banner-pending {
+  background: #FFFDF0;
+  border: 1px solid rgba(197, 155, 39, 0.4);
+  color: #C59B27;
+}
+
+.banner-approved {
+  background: #E8F8F0;
+  border: 1px solid rgba(39, 174, 96, 0.4);
+  color: #27AE60;
+}
+
+.banner-rejected {
+  background: #FDEDEC;
+  border: 1px solid rgba(231, 76, 60, 0.4);
+  color: #E74C3C;
+}
+
+.rejection-reason-notice {
+  background: #FFFFFF;
+  border: 1px dashed rgba(231, 76, 60, 0.5);
+  border-radius: 12px;
+  padding: 14px 18px;
+  color: #E74C3C;
+  font-size: 0.9rem;
+  margin-top: 6px;
 }

@@ -668,6 +668,205 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
   }
 
+  // -------------------------------------------------------------
+  // Real-Time Gown Tracking & Status System
+  // -------------------------------------------------------------
+
+  const elBtnOpenTrackingModal = document.getElementById('btnOpenTrackingModal');
+  const elTrackingModalOverlay = document.getElementById('trackingModalOverlay');
+  const elTrackingModalBody = document.getElementById('trackingModalBody');
+  const elBtnCloseTrackingModal = document.getElementById('btnCloseTrackingModal');
+
+  function saveListingIdToLocal(docId) {
+    if (!docId) return;
+    let saved = [];
+    try {
+      saved = JSON.parse(localStorage.getItem('once_gown_my_listings') || '[]');
+    } catch(e) { saved = []; }
+
+    if (!saved.includes(docId)) {
+      saved.unshift(docId);
+      localStorage.setItem('once_gown_my_listings', JSON.stringify(saved));
+    }
+    updateHeaderTrackingBtn();
+  }
+
+  function getLocalListings() {
+    try {
+      return JSON.parse(localStorage.getItem('once_gown_my_listings') || '[]');
+    } catch(e) { return []; }
+  }
+
+  function updateHeaderTrackingBtn() {
+    const listings = getLocalListings();
+    if (listings.length > 0 && elBtnOpenTrackingModal) {
+      elBtnOpenTrackingModal.classList.remove('hidden');
+    }
+  }
+
+  function setupTrackingSystem() {
+    updateHeaderTrackingBtn();
+
+    if (elBtnOpenTrackingModal) {
+      elBtnOpenTrackingModal.addEventListener('click', () => {
+        const listings = getLocalListings();
+        if (listings.length > 0) {
+          openTrackingModal(listings[0]);
+        }
+      });
+    }
+
+    if (elBtnCloseTrackingModal) {
+      elBtnCloseTrackingModal.addEventListener('click', () => {
+        if (elTrackingModalOverlay) elTrackingModalOverlay.classList.add('hidden');
+      });
+    }
+
+    if (elTrackingModalOverlay) {
+      elTrackingModalOverlay.addEventListener('click', (e) => {
+        if (e.target === elTrackingModalOverlay) {
+          elTrackingModalOverlay.classList.add('hidden');
+        }
+      });
+    }
+
+    // Check URL query param ?track=ID
+    const urlParams = new URLSearchParams(window.location.search);
+    const trackId = urlParams.get('track');
+    if (trackId) {
+      saveListingIdToLocal(trackId);
+      openTrackingModal(trackId);
+    }
+  }
+
+  let activeTrackingUnsubscribe = null;
+
+  function openTrackingModal(dressId) {
+    if (!elTrackingModalOverlay || !elTrackingModalBody) return;
+    elTrackingModalOverlay.classList.remove('hidden');
+    hideRoleModal();
+
+    elTrackingModalBody.innerHTML = `
+      <div style="text-align: center; padding: 30px; color: var(--text-secondary);">
+        ⏳ ${i18n.lang === 'ar' ? 'جاري تحميل حالة الطلب من قاعدة البيانات...' : 'Loading tracking status from Firestore...'}
+      </div>
+    `;
+
+    if (typeof db === 'undefined' || !db) {
+      elTrackingModalBody.innerHTML = `
+        <div style="text-align: center; padding: 20px; color: var(--rose-deep);">
+          ⚠️ ${i18n.lang === 'ar' ? 'يتطلب الاتصال بقاعدة البيانات لراحتكِ.' : 'Database connection required for live tracking.'}
+        </div>
+      `;
+      return;
+    }
+
+    if (activeTrackingUnsubscribe) {
+      activeTrackingUnsubscribe();
+    }
+
+    activeTrackingUnsubscribe = db.collection('dresses').doc(dressId).onSnapshot((doc) => {
+      if (!doc.exists) {
+        elTrackingModalBody.innerHTML = `
+          <div style="text-align: center; padding: 20px; color: var(--status-rejected);">
+            ❌ ${i18n.lang === 'ar' ? 'عفواً، لم نتمكن من العثور على طلب الفستان بهذا الرابط.' : 'Gown listing submission not found for this link.'}
+          </div>
+        `;
+        return;
+      }
+
+      const dress = doc.data();
+      renderLiveTrackingCard(dressId, dress);
+    }, (err) => {
+      console.error('Error tracking dress:', err);
+    });
+  }
+
+  function renderLiveTrackingCard(dressId, dress) {
+    const isAr = i18n.lang === 'ar';
+    const status = dress.status || 'pending_review';
+
+    let bannerClass = 'banner-pending';
+    let statusBadgeText = i18n.t('track.statusPending');
+    let statusDescText = i18n.t('track.pendingDesc');
+
+    if (status === 'approved') {
+      bannerClass = 'banner-approved';
+      statusBadgeText = i18n.t('track.statusApproved');
+      statusDescText = i18n.t('track.approvedDesc');
+    } else if (status === 'rejected') {
+      bannerClass = 'banner-rejected';
+      statusBadgeText = i18n.t('track.statusRejected');
+      statusDescText = i18n.t('track.rejectedDesc');
+    }
+
+    const coverImage = (dress.images && dress.images.length > 0) ? dress.images[0] : 'assets/logo.jpg';
+    const trackingUrl = window.location.origin + window.location.pathname + '?track=' + dressId;
+
+    elTrackingModalBody.innerHTML = `
+      <div class="tracking-card-container">
+
+        <!-- Status Banner Header -->
+        <div class="tracking-status-banner ${bannerClass}">
+          <h3 style="font-size: 1.15rem; font-weight: 700; display: flex; align-items: center; gap: 8px;">
+            ${statusBadgeText}
+          </h3>
+          <p style="font-size: 0.88rem; opacity: 0.95;">
+            ${statusDescText}
+          </p>
+        </div>
+
+        <!-- Rejection Reason Notice Box (if status is rejected) -->
+        ${(status === 'rejected' && dress.rejectionReason) ? `
+          <div class="rejection-reason-notice">
+            <strong style="display: block; margin-bottom: 4px; font-weight: 700;">
+              ❌ ${i18n.t('track.rejectionReasonTitle')}
+            </strong>
+            <p style="font-size: 0.92rem; line-height: 1.5; color: #2B181B;">
+              ${dress.rejectionReason}
+            </p>
+          </div>
+        ` : ''}
+
+        <!-- Gown Preview Card -->
+        <div style="display: flex; gap: 14px; background: var(--surface-input); border: 1px solid var(--border-color); padding: 14px; border-radius: 14px; align-items: center;">
+          <img src="${coverImage}" style="width: 70px; height: 90px; border-radius: 10px; object-fit: cover;" alt="صورة الفستان" />
+          <div style="font-size: 0.88rem;">
+            <div style="font-weight: 700; color: var(--rose-deep); margin-bottom: 4px;">${dress.brand ? dress.brand : (isAr ? 'فستان فاخر' : 'Luxury Gown')} ${dress.color ? `• ${dress.color}` : ''}</div>
+            <div style="color: var(--text-secondary); margin-bottom: 2px;">${isAr ? 'المقاس:' : 'Size:'} ${dress.size || '-'}</div>
+            <div style="color: var(--gold-dark); font-weight: 700;">${dress.rentPrice ? `${dress.rentPrice.toLocaleString()} ${i18n.t('review.currency')}` : (dress.sellPrice ? `${dress.sellPrice.toLocaleString()} ${i18n.t('review.currency')}` : '')}</div>
+          </div>
+        </div>
+
+        <!-- Link Box inside modal -->
+        <div style="background: #FFF; border: 1px solid var(--border-color); border-radius: 12px; padding: 12px; font-size: 0.82rem; display: flex; align-items: center; justify-content: space-between; gap: 10px;">
+          <span style="direction: ltr; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--text-secondary);">${trackingUrl}</span>
+          <button type="button" class="btn-luxury btn-secondary-outline" id="btnModalCopyLink" style="padding: 6px 12px; font-size: 0.78rem; flex-shrink: 0;">${i18n.t('track.copyBtn')}</button>
+        </div>
+
+        <!-- Action Buttons Footer -->
+        <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 10px;">
+          <a href="https://wa.me/201012345678?text=${encodeURIComponent(isAr ? `مرحباً، أستفسر عن فستاني المرفوع برابط المتابعة: ${trackingUrl}` : `Hello! Inquiring about my gown tracking link: ${trackingUrl}`)}" target="_blank" class="btn-luxury btn-secondary-outline" style="font-size: 0.82rem; padding: 8px 16px; color: #25D366; border-color: rgba(37, 211, 102, 0.4);">
+            💬 ${isAr ? 'التواصل مع الدعم' : 'Contact Support'}
+          </a>
+        </div>
+
+      </div>
+    `;
+
+    const btnModalCopy = document.getElementById('btnModalCopyLink');
+    if (btnModalCopy) {
+      btnModalCopy.addEventListener('click', () => {
+        navigator.clipboard.writeText(trackingUrl);
+        btnModalCopy.textContent = i18n.t('track.copiedMsg');
+        setTimeout(() => { btnModalCopy.textContent = i18n.t('track.copyBtn'); }, 2500);
+      });
+    }
+  }
+
+  // Initialize Tracking System
+  setupTrackingSystem();
+
   async function submitForm() {
     collectFormData();
     const payload = FirebasePayloadBuilder.buildPayload(state.formData, imageService.getBase64Payload());
@@ -676,7 +875,8 @@ document.addEventListener('DOMContentLoaded', () => {
     elBtnNextText.textContent = i18n.t('nav.saving');
 
     try {
-      await saveDressToFirestore(payload);
+      const docId = await saveDressToFirestore(payload);
+      saveListingIdToLocal(docId);
 
       if (elSellerProgressCard) elSellerProgressCard.classList.add('hidden');
       if (elWizardCard) elWizardCard.classList.add('hidden');
@@ -684,6 +884,44 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const successView = document.getElementById('successView');
       if (successView) successView.classList.remove('hidden');
+
+      // Setup Private Tracking Link Box on Success View
+      const trackingLinkBox = document.getElementById('trackingLinkBox');
+      const trackingUrlInput = document.getElementById('trackingUrlInput');
+      const btnCopyTrackingUrl = document.getElementById('btnCopyTrackingUrl');
+      const trackingCopyToast = document.getElementById('trackingCopyToast');
+      const btnShareTrackingWa = document.getElementById('btnShareTrackingWa');
+      const btnViewTrackingLive = document.getElementById('btnViewTrackingLive');
+
+      if (docId && trackingLinkBox && trackingUrlInput) {
+        const trackingUrl = window.location.origin + window.location.pathname + '?track=' + docId;
+        trackingUrlInput.value = trackingUrl;
+        trackingLinkBox.classList.remove('hidden');
+
+        if (btnCopyTrackingUrl) {
+          btnCopyTrackingUrl.addEventListener('click', () => {
+            navigator.clipboard.writeText(trackingUrl);
+            if (trackingCopyToast) trackingCopyToast.classList.remove('hidden');
+            setTimeout(() => {
+              if (trackingCopyToast) trackingCopyToast.classList.add('hidden');
+            }, 3000);
+          });
+        }
+
+        if (btnShareTrackingWa) {
+          btnShareTrackingWa.addEventListener('click', () => {
+            const isAr = i18n.lang === 'ar';
+            const waText = isAr ? `رابط متابعة فستاني المرفوع على Once Gown: ${trackingUrl}` : `My Once Gown listing tracking link: ${trackingUrl}`;
+            window.open(`https://wa.me/?text=${encodeURIComponent(waText)}`, '_blank');
+          });
+        }
+
+        if (btnViewTrackingLive) {
+          btnViewTrackingLive.addEventListener('click', () => {
+            openTrackingModal(docId);
+          });
+        }
+      }
 
       const btnReset = document.getElementById('btnResetForm');
       if (btnReset) {
