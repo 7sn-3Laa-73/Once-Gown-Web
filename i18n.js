@@ -362,7 +362,9 @@ const translations = {
     "step4.defectsNo": "لا، بحالة ممتازة",
     "step4.defectsYes": "نعم، يوجد ملاحظات",
     "step4.defectDetailsLabel": "توضيح العيوب",
-    "step4.defectDetailsPlaceholder": "مثال: بقعة     // Success Screen & Tracking Link
+    "step4.defectDetailsPlaceholder": "مثال: بقعة صغيرة بالقرب من الذيل...",
+
+    // Success Screen & Tracking Link
     "success.title": "تم استلام طلبك بنجاح",
     "success.message": "سيقوم فريق Once Gown بمراجعة الطلب ونشر فستانكِ في أقرب وقت.",
     "success.resetBtn": "إضافة فستان آخر",
@@ -393,8 +395,8 @@ const translations = {
     "error.governorateRequired": "الرجاء اختيار المحافظة",
     "error.cityRequired": "الرجاء إدخال المدينة / المنطقة",
     "error.addressRequired": "الرجاء إدخال العنوان بالتفصيل",
-    "error.agreementRequired": "يجب الموافقة على صحة البيانات ونشر الفستان قبل الإرسال"
-  },�م:",
+    "review.ownerTitle": "بيانات المالك والتواصل",
+    "review.ownerName": "الاسم:",
     "review.phone": "واتساب:",
     "review.address": "العنوان:",
     "review.specsTitle": "مواصفات الفستان والأسعار",
