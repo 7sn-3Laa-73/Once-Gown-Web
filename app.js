@@ -95,8 +95,29 @@ document.addEventListener('DOMContentLoaded', () => {
       elBtnSelectSeller.addEventListener('click', () => setRole('seller', true));
     }
 
+    const btnSellerAction = document.querySelector('.btn-seller-action');
+    if (btnSellerAction) {
+      btnSellerAction.addEventListener('click', (e) => {
+        e.stopPropagation();
+        setRole('seller', true);
+      });
+    }
+
+    if (elHeaderBadgeSeller) {
+      elHeaderBadgeSeller.style.cursor = 'pointer';
+      elHeaderBadgeSeller.addEventListener('click', () => setRole('seller', true));
+    }
+
     if (elBtnSelectBuyer) {
       elBtnSelectBuyer.addEventListener('click', () => setRole('buyer', true));
+    }
+
+    const btnBuyerAction = document.querySelector('.btn-buyer-action');
+    if (btnBuyerAction) {
+      btnBuyerAction.addEventListener('click', (e) => {
+        e.stopPropagation();
+        setRole('buyer', true);
+      });
     }
 
     if (elBtnOpenRoleModal) {
@@ -139,18 +160,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
     hideRoleModal();
 
+    const successView = document.getElementById('successView');
+
     if (role === 'seller') {
-      // Show Seller Listing Form
+      // Show Seller Listing Form & Hide Other Views
       if (elBuyerComingSoonView) elBuyerComingSoonView.classList.add('hidden');
+      if (successView) successView.classList.add('hidden');
+
       if (elSellerProgressCard) elSellerProgressCard.classList.remove('hidden');
       if (elWizardCard) elWizardCard.classList.remove('hidden');
       if (elStickyActionsBar) elStickyActionsBar.classList.remove('hidden');
       if (elHeaderBadgeSeller) elHeaderBadgeSeller.classList.remove('hidden');
 
+      // Reset step if form was previously completed
+      if (state.currentStep > state.totalSteps) {
+        state.currentStep = 1;
+      }
+
       updateStepUI();
       window.scrollTo({ top: 100, behavior: 'smooth' });
     } else if (role === 'buyer') {
-      // Show Buyer Coming Soon View
+      // Show Buyer Coming Soon View & Hide Seller Views
+      if (successView) successView.classList.add('hidden');
       if (elSellerProgressCard) elSellerProgressCard.classList.add('hidden');
       if (elWizardCard) elWizardCard.classList.add('hidden');
       if (elStickyActionsBar) elStickyActionsBar.classList.add('hidden');
@@ -187,6 +218,9 @@ document.addEventListener('DOMContentLoaded', () => {
       updateStepUI();
       if (state.currentStep === state.totalSteps && state.role === 'seller') {
         renderReviewSummary();
+      }
+      if (elTrackingModalOverlay && !elTrackingModalOverlay.classList.contains('hidden') && activeTrackingDressId) {
+        openTrackingModal(activeTrackingDressId);
       }
     });
   }
@@ -740,9 +774,11 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   let activeTrackingUnsubscribe = null;
+  let activeTrackingDressId = null;
 
   function openTrackingModal(dressId) {
     if (!elTrackingModalOverlay || !elTrackingModalBody) return;
+    activeTrackingDressId = dressId;
     elTrackingModalOverlay.classList.remove('hidden');
     hideRoleModal();
 
@@ -803,8 +839,29 @@ document.addEventListener('DOMContentLoaded', () => {
     const coverImage = (dress.images && dress.images.length > 0) ? dress.images[0] : 'assets/logo.jpg';
     const trackingUrl = window.location.origin + window.location.pathname + '?track=' + dressId;
 
+    const listings = getLocalListings();
+    let multiSelectHtml = '';
+    if (listings.length > 1) {
+      multiSelectHtml = `
+        <div style="margin-bottom: 16px; background: var(--surface-input); padding: 10px 14px; border-radius: 12px; border: 1px solid var(--border-color);">
+          <label style="font-size: 0.82rem; font-weight: 600; color: var(--rose-deep); display: block; margin-bottom: 6px;">
+            👗 ${isAr ? 'اختر الفستان المراد متابعته:' : 'Select Listed Gown:'}
+          </label>
+          <select id="multiGownSelect" class="form-input" style="font-size: 0.85rem; padding: 6px 10px; background: #FFF;">
+            ${listings.map((id, index) => `
+              <option value="${id}" ${id === dressId ? 'selected' : ''}>
+                ${isAr ? `طلب فستان #${listings.length - index}` : `Gown Submission #${listings.length - index}`} (${id.substring(0, 12)}...)
+              </option>
+            `).join('')}
+          </select>
+        </div>
+      `;
+    }
+
     elTrackingModalBody.innerHTML = `
       <div class="tracking-card-container">
+
+        ${multiSelectHtml}
 
         <!-- Status Banner Header -->
         <div class="tracking-status-banner ${bannerClass}">
@@ -860,6 +917,13 @@ document.addEventListener('DOMContentLoaded', () => {
         navigator.clipboard.writeText(trackingUrl);
         btnModalCopy.textContent = i18n.t('track.copiedMsg');
         setTimeout(() => { btnModalCopy.textContent = i18n.t('track.copyBtn'); }, 2500);
+      });
+    }
+
+    const elMultiSelect = document.getElementById('multiGownSelect');
+    if (elMultiSelect) {
+      elMultiSelect.addEventListener('change', (e) => {
+        openTrackingModal(e.target.value);
       });
     }
   }
