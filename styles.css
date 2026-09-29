@@ -1991,3 +1991,22 @@ html[dir="ltr"] .role-card {
   font-size: 0.9rem;
   margin-top: 6px;
 }
+/* ---------- Buyer Interest Poll ---------- */
+.poll-card { margin: 20px 0; text-align: start; }
+.poll-question { font-size: 1.1rem; color: var(--rose-deep); margin-bottom: 12px; text-align: center; }
+.poll-options { display: flex; flex-direction: column; gap: 10px; }
+.poll-option {
+  position: relative; overflow: hidden; display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; width: 100%; padding: 14px 16px; font: inherit; color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.7); border: 1px solid var(--border-hairline-dark);
+  border-radius: 12px; cursor: pointer; transition: border-color .2s, transform .15s;
+}
+.poll-option:hover { border-color: var(--rose-deep); transform: translateY(-1px); }
+.poll-fill {
+  position: absolute; inset-block: 0; inset-inline-start: 0; width: 0;
+  background: rgba(197, 155, 39, 0.22); transition: width .6s ease; z-index: 0;
+}
+.poll-label, .poll-stat { position: relative; z-index: 1; }
+.poll-stat { font-weight: 600; font-size: .9rem; color: var(--rose-deep); white-space: nowrap; }
+.poll-option.selected { border-color: var(--rose-deep); font-weight: 600; }
+.poll-thanks { text-align: center; margin-top: 14px; padding: 12px; border-radius: 12px; background: rgba(197, 155, 39, 0.15); color: var(--rose-deep); font-weight: 600; }

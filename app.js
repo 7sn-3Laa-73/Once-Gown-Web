@@ -79,17 +79,9 @@ document.addEventListener('DOMContentLoaded', () => {
   // -------------------------------------------------------------
 
   function setupRoleSelector() {
-    // Check if user has saved role choice or show modal by default
-    const savedRole = localStorage.getItem('once_gown_role');
-
-    if (savedRole === 'seller') {
-      setRole('seller', false);
-    } else if (savedRole === 'buyer') {
-      setRole('buyer', false);
-    } else {
-      // Show modal on first visit
-      showRoleModal();
-    }
+    // Always ask for the role on every page load
+    localStorage.removeItem('once_gown_role');
+    showRoleModal();
 
     if (elBtnSelectSeller) {
       elBtnSelectSeller.addEventListener('click', () => setRole('seller', true));
@@ -154,10 +146,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function setRole(role, persist = true) {
     state.role = role;
-    if (persist) {
-      localStorage.setItem('once_gown_role', role);
-    }
-
     hideRoleModal();
 
     const successView = document.getElementById('successView');
@@ -1000,4 +988,48 @@ document.addEventListener('DOMContentLoaded', () => {
       elBtnNextText.textContent = i18n.t('nav.submit');
     }
   }
+
+  // -------------------------------------------------------------
+  // Buyer Interest Poll (Firestore doc: polls/gownInterest)
+  // -------------------------------------------------------------
+
+  const POLL_KEYS = ['evening', 'guest', 'engagement', 'bridal', 'gala'];
+  const elPollCard = document.getElementById('gownPoll');
+  const elPollThanks = document.getElementById('pollThanks');
+  let myVotes = []; // per page load only, a refresh starts fresh
+
+  function pollRef() {
+    return (typeof db !== 'undefined' && db) ? db.collection('polls').doc('gownInterest') : null;
+  }
+
+  function renderPoll() {
+    if (!elPollCard) return;
+    elPollCard.querySelectorAll('.poll-option').forEach(btn => {
+      btn.classList.toggle('selected', myVotes.includes(btn.dataset.choice));
+    });
+    if (elPollThanks) elPollThanks.classList.toggle('hidden', !myVotes.length);
+  }
+
+  function setupPoll() {
+    if (!elPollCard) return;
+    const ref = pollRef();
+    elPollCard.querySelectorAll('.poll-option').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const key = btn.dataset.choice;
+        if (myVotes.includes(key)) return;
+        myVotes.push(key);
+        renderPoll();
+        if (ref) {
+          try {
+            await ref.set({ [key]: firebase.firestore.FieldValue.increment(1) }, { merge: true });
+          } catch (err) {
+            console.error('Poll vote error:', err);
+          }
+        }
+      });
+    });
+    renderPoll();
+  }
+
+  setupPoll();
 });
